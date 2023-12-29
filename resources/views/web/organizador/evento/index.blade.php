@@ -100,7 +100,7 @@
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="border border-gray-200 dark:border-gray-700 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                                        id="tabla-personal">
+                                        id="tabla-evento">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
                                             <tr class="encabezado">
                                                 <th scope="col"
@@ -210,12 +210,24 @@
                                                                 </svg>
                                                             </button>
                                                             <div id="myDropdown" class="dropdown-content">
-                                                                <a href="#editar" class="hover:bg-gray-200">Editar</a>
-                                                                <a href="#fotografos"
-                                                                    class="hover:bg-gray-200">Fotografos</a>
-                                                                <a href="#invitados"
-                                                                    class="hover:bg-gray-200">Invitados</a>
-                                                                <a href="#estado" class="hover:bg-gray-200">Estado</a>
+                                                                @if ($evento->estado == \App\Models\Evento::VIGENTE || $evento->estado == \App\Models\Evento::CURSO)
+                                                                    <a href="{{route('organizador.evento.edit',$evento->id)}}"
+                                                                        class="hover:bg-gray-200">Editar</a>
+                                                                    <a href="#fotografos"
+                                                                        class="hover:bg-gray-200">Fotografos</a>
+                                                                    <a href="#invitados"
+                                                                        class="hover:bg-gray-200">Invitados</a>
+                                                                    <a href="#estado"
+                                                                        class="hover:bg-gray-200">Estado</a>
+                                                                @elseif($evento->estado == \App\Models\Evento::FINALIZADO||$evento->estado == \App\Models\Evento::CANCELADO)
+                                                                    <a href="#editar"
+                                                                        class="hover:bg-gray-200">Ver</a>
+                                                                    <a href="#fotografos"
+                                                                        class="hover:bg-gray-200">Fotografos</a>
+                                                                    <a href="#invitados"
+                                                                        class="hover:bg-gray-200">Invitados</a>
+                                                                @endif
+
                                                                 {{-- <a href="{{ route('personal.edit', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Editar</a>
                                                                 <a href="#" data-id={{ $evento->id }}
@@ -439,25 +451,39 @@
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Muestra todas las filas que no son de encabezado
-            $('#tabla-personal tr:not(.encabezado)').show();
+            $('#tabla-evento tr:not(.encabezado)').show();
         });
-
-        $('#btn-medicos').click(function() {
+        $('#btn-vigente').click(function() {
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Oculta todas las filas que no son de encabezado
-            $('#tabla-personal tr:not(.encabezado)').hide();
-            // Muestra solo las filas que corresponden a médicos
-            $('#tabla-personal tr[data-tipo="M"]:not(.encabezado)').show();
-        });
-
-        $('#btn-enfermeras').click(function() {
-            $('.btn').removeClass('btn-activo');
-            $(this).addClass('btn-activo');
-            // Oculta todas las filas que no son de encabezado
-            $('#tabla-personal tr:not(.encabezado)').hide();
+            $('#tabla-evento tr:not(.encabezado)').hide();
             // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-personal tr[data-tipo="E"]:not(.encabezado)').show();
+            $('#tabla-evento tr[data-tipo="VIGENTE"]:not(.encabezado)').show();
+        });
+        $('#btn-en-curso').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-evento tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a médicos
+            $('#tabla-evento tr[data-tipo="EN CURSO"]:not(.encabezado)').show();
+        });
+        $('#btn-finalizado').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-evento tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a enfermeras
+            $('#tabla-evento tr[data-tipo="FINALIZADO"]:not(.encabezado)').show();
+        });
+        $('#btn-cancelado').click(function() {
+            $('.btn').removeClass('btn-activo');
+            $(this).addClass('btn-activo');
+            // Oculta todas las filas que no son de encabezado
+            $('#tabla-evento tr:not(.encabezado)').hide();
+            // Muestra solo las filas que corresponden a enfermeras
+            $('#tabla-evento tr[data-tipo="CANCELADO"]:not(.encabezado)').show();
         });
     </script>
     <script>
