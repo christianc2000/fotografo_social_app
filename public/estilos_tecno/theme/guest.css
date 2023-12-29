@@ -1,0 +1,10 @@
+.body-background {
+
+    background-image: url('../img/fotografia_fondo.jpg');
+    background-size: cover;
+    /* Asegura que la imagen cubra todo el elemento */
+    background-repeat: no-repeat;
+    /* Evita que la imagen se repita */
+    min-height: 120vh;
+    /* Asegura que el elemento tenga al menos el alto de la ventana del navegador */
+}
