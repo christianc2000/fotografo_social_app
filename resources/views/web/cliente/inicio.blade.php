@@ -33,11 +33,14 @@
                                 </h3>
                                 <p class="text-sm font-medium text-gray-900 subtitulo3">Bs {{ $image->precio }}</p>
                                 <div class="mt-1 flex gap-2">
-                                    <button class="btn-add-cart text-sm text-white bg-blue-500 px-2 py-1 rounded"
-                                        data-user="{{ Auth::user()->id }}" data-image="{{ $image->id }}">Añadir al
-                                        carrito</button>
-                                    <button class="btn-view-image text-sm text-white bg-green-500 px-2 py-1 rounded">Ver
-                                        imagen</button>
+                                    @auth
+                                        <button class="btn-add-cart text-sm text-white bg-blue-500 px-2 py-1 rounded"
+                                            data-user="{{ Auth::user()->id }}" data-image="{{ $image->id }}">Añadir al
+                                            carrito</button>
+                                        <button class="btn-view-image text-sm text-white bg-green-500 px-2 py-1 rounded">Ver
+                                            imagen</button>
+                                    @endauth
+
                                 </div>
                             </div>
 
@@ -217,6 +220,7 @@
             });
         });
         addEventListenersToBtnDel();
+
         function addEventListenersToBtnDel() {
             var btnsDel = document.querySelectorAll('.btn-del');
             btnsDel.forEach(function(btnDel) {
