@@ -9,13 +9,21 @@
                     @method('put')
                     <div class="space-y-12">
                         <div class="border-b border-gray-900/10 pb-4">
-                            <h2 class="text-base font-semibold leading-7 text-gray-700">Editar Evento</h2>
-                            <p class="mt-1 text-sm leading-6 text-gray-600">Actualizar un nuevo evento.</p>
-
+                            <div>
+                                <div class="flex items-center gap-x-3">
+                                    <h2 class="text-lg font-medium text-gray-700 dark:text-white">Editar Eventos</h2>
+    
+                                    {{-- <span
+                                        class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
+                                        vendors</span> --}}
+                                </div>
+    
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Actualizar un nuevo evento.</p>
+                            </div>
                             <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div class="col-span-full">
                                     <label for="titulo"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Título</label>
+                                        class="block text-sm font-medium text-gray-700 dark:text-white">Título</label>
                                     <div>
                                         <input type="text" name="titulo" id="titulo" autocomplete="given-titulo"
                                             value="{{ $evento->titulo }}"
@@ -30,7 +38,7 @@
                                 </div>
                                 <div class="col-span-full">
                                     <label for="descripcion"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Descripción</label>
+                                        class="block text-sm font-medium text-gray-700 dark:text-white">Descripción</label>
                                     <div>
                                         <input type="text" name="descripcion" id="descripcion"
                                             value="{{ $evento->descripcion }}" autocomplete="given-descripcion"
@@ -46,7 +54,7 @@
 
                                 <div class="col-span-full">
                                     <label for="direccion"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Dirección</label>
+                                        class="block text-sm font-medium text-gray-700 dark:text-white">Dirección</label>
                                     <div>
                                         <input type="text" name="direccion" id="direccion" autocomplete="family-name"
                                             value="{{ $evento->direccion }}"
@@ -61,9 +69,11 @@
                                 </div>
                                 <div class="col-span-full">
                                     <label for="fecha_evento"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Fecha del
+                                        class="block text-sm font-medium text-gray-700 dark:text-white">Fecha del
                                         evento</label>
+                                       
                                     <div class="mt-2">
+                                   
                                         <input type="datetime-local" name="fecha_evento" id="fecha_evento"
                                             value="{{ $evento->fecha_evento }}" autocomplete="family-name"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -77,7 +87,7 @@
                                 </div>
                                 <div class="col-span-full">
                                     <label for="photo"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Foto</label>
+                                        class="block text-sm font-medium text-gray-700 dark:text-white">Foto</label>
                                     <div class="flex items-center gap-x-3">
                                         <!-- component -->
                                         <div class="flex items-center space-x-6">
@@ -93,7 +103,7 @@
 
                                             </div>
                                             <label class="block">
-                                                <span class="sr-only">Seleccionar foto de perfil</span>
+                                                <span class="sr-only font-medium text-gray-700 dark:text-white">Seleccionar foto de perfil</span>
                                                 <input type="file" id="imagen" name="imagen" accept="image/*"
                                                     class="block w-full text-sm text-slate-500
                                                 file:mr-4 file:py-2 file:px-4
@@ -112,7 +122,7 @@
                                 @endphp
                                 <div class="col-span-full">
                                     <label for="direccion"
-                                        class="block text-sm font-medium leading-6 text-gray-900">Ubicación</label>
+                                        class="block text-sm leading-6 font-medium text-gray-700 dark:text-white">Ubicación</label>
                                     <div class="block w-full rounded-md border-0 py-1.5 sm:leading-6">
                                         <input type="hidden" id="lati" name="latitud" value={{ $latitud }}>
                                         <input type="hidden" id="longi" name="longitud" value={{ $longitud }}>
@@ -128,7 +138,7 @@
 
                     <div class="mt-2 flex items-center justify-end gap-x-6">
                         <a href="{{ route('organizador.evento.index') }}"
-                            class="text-sm font-semibold leading-6 text-gray-900">Cancelar</a>
+                        class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">Cancelar</a>
 
                         <button type="submit"
                             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>

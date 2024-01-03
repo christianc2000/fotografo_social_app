@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Evento\StoreEventoRequest;
 use App\Http\Requests\Evento\UpdateEventoRequest;
 use App\Models\Evento;
+use App\Models\User;
+use App\Notifications\UserToEventoNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,11 +19,10 @@ class EventoController extends Controller
     {
         $user = Auth::user();
         if ($user->tipo == "O") {
-            $eventos = $user->eventos;
-
+            $eventos = $user->eventos()->orderByDesc('updated_at')->get();
             return view('web.organizador.evento.index', compact('eventos'));
         } else {
-            return view('pages/utility/404');
+            return view('pages.utility.404');
         }
     }
     public function create()
@@ -59,13 +61,15 @@ class EventoController extends Controller
         }
     }
 
-    public function edit($id){
-        $evento=Evento::find($id);
+    public function edit($id)
+    {
+        $evento = Evento::find($id);
 
-        return view('web.organizador.evento.edit',compact('evento'));
+        return view('web.organizador.evento.edit', compact('evento'));
     }
 
-    public function update(UpdateEventoRequest $request, $id){
+    public function update(UpdateEventoRequest $request, $id)
+    {
         $urlImagen = null;
         $evento = Evento::find($id);
         if (isset($evento)) {
@@ -79,7 +83,7 @@ class EventoController extends Controller
 
                 // Subir la nueva imagen
                 $imagen = $request->file('imagen');
-                $nombreImagen = time() . '_' . $request->name . '_perfil' . '.' . $imagen->getClientOriginalExtension();
+                $nombreImagen = time() . '_' . $request->name . '_evento' . '.' . $imagen->getClientOriginalExtension();
                 $path = Storage::disk('s3')->putFileAs(
                     'fotografia_app/evento',
                     $imagen,
@@ -94,16 +98,78 @@ class EventoController extends Controller
             $gps = $request->latitud . "," . $request->longitud;
             $fecha = $request->input('fecha_evento'); // Recoge el valor del formulario
             $fechaBD = date("Y-m-d H:i:s", strtotime($fecha));
-            $evento->titulo=$request->titulo;
-            $evento->descripcion=$request->descripcion;
-            $evento->direccion=$request->direccion;
-            $evento->fecha_evento=$fechaBD;
-            $evento->gps=$gps;
+            $evento->titulo = $request->titulo;
+            $evento->descripcion = $request->descripcion;
+            $evento->direccion = $request->direccion;
+            $evento->fecha_evento = $fechaBD;
+            $evento->gps = $gps;
             $evento->save();
 
             return redirect()->route('organizador.evento.index')->with('mensaje', "Evento actualizado exitosamente");
         } else {
             return redirect()->route('organizador.evento.index')->with('error', "Error al actualizar el evento");
+        }
+    }
+
+    public function fotografosEvento($id)
+    {
+        $user = Auth::user();
+        if ($user->tipo == "O") {
+            $evento = $user->eventos->where('id', $id)->first();
+            if (isset($evento)) {
+                $fotografos = $evento->fotografosVinculadosEvento;
+                return view('web.organizador.evento.fotografo', compact('evento', 'fotografos'));
+            } else {
+                return redirect()->route('organizador.evento.index')->with('error', "Error evento no le pertenece");
+            }
+        } else {
+            return view('pages/utility/404');
+        }
+    }
+    public function agregarFotografo($id)
+    {
+
+        $user = Auth::user();
+        if ($user->tipo == "O") {
+            $evento = $user->eventos->where('id', $id)->first();
+            if (isset($evento)) {
+                $fotografosVinculados = $user->fotografos->where('pivot.estado', true);
+                $fotografosEvento = $evento->fotografosVinculadosEvento;
+                $fotografosSinEvento = $fotografosVinculados->diff($fotografosEvento);
+                //return $fotografosSinEvento;
+                return view('web.organizador.evento.fotografo_agregar', compact('fotografosSinEvento', 'evento'));
+            } else {
+                return redirect()->route('organizador.evento.index')->with('error', "Error evento no le pertenece");
+            }
+        } else {
+            return view('pages/utility/404');
+        }
+    }
+
+    public function agregarFotografoStore(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        if ($user->tipo == "O") {
+            $evento = Evento::find($id);
+            if (isset($evento)) {
+                $request->validate([
+                    'fotografo_id' => 'required|exists:users,id'
+                ]);
+
+                $fotografo = User::find($request->fotografo_id);
+                $fotografo->vinculacionEvento()->attach($evento, [
+                    'fecha_envio' => Carbon::now()->toDateTimeString()
+                ]);
+                $fotografo->notify(new UserToEventoNotification((string) $id, $evento->titulo, $evento->img_evento, User::EVENTO));
+                return redirect()->route('organizador.evento.fotografos.index', $evento->id)->with('mensaje', "Fotografo vinculado al evento exitosamente. Esperando confirmación");
+                //logica para enviar la invitación por correo
+            } else {
+                //si el evento que pasa no existe
+                return redirect()->route('organizador.evento.fotografos.index', $evento->id)->with('error', "Error evento no le pertenece");
+            }
+        } else {
+            return view('pages/utility/404');
         }
     }
 }

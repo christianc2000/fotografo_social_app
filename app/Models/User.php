@@ -22,7 +22,11 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     // use HasRoles;
-
+    const EVENTO = "EVENTO"; //Cuando se invita a un fotografo a participar de un evento, notificar al user fotografo. Usar los datos de un evento como: id, titulo, url_imagen
+    const FOTOC = "FOTO CLIENTE"; //Cuando el cliente aparece en una foto enviar al cliente, notificar al user cliente. Usar los datos de la imagen como: id, titulo, url_photo
+    const COMPRAR = "FOTO COMPRAR";
+    const ACEPTARFOTOGRAFO = "FOTOGRAFO ACEPTA";
+    const ACEPTARCLIENTE = "CLIENTE ACEPTA";
     /**
      * The attributes that are mass assignable.
      *
@@ -90,5 +94,38 @@ class User extends Authenticatable
     public function eventos()
     {
         return $this->hasMany(Evento::class);
+    }
+
+    public function vinculacionEvento()
+    {
+        return $this->belongsToMany(Evento::class, 'evento_user')->withPivot('estado', 'fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'user_id', 'evento_id')->withTimestamps();
+    }
+
+    // public function fotografosVinculado(){
+    //     return $this->belongsToMany(User::class, 'vinculado', 'organizador_id', 'fotografo_id')->withPivot('estado')->withTimestamps();
+    // }
+    public function organizadores()
+    {
+        return $this->belongsToMany(User::class, 'vinculado', 'fotografo_id', 'organizador_id')
+            ->where('tipo', 'O')
+            ->withPivot('estado')->withTimestamps();
+    }
+
+    public function fotografos()
+    {
+        return $this->belongsToMany(User::class, 'vinculado', 'organizador_id', 'fotografo_id')
+            ->where('tipo', 'F')
+            ->withPivot('estado')->withTimestamps();
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
+    //relación con orden
+    public function ordens()
+    {
+        return $this->hasMany(Orden::class);
     }
 }

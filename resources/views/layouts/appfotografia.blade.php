@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultorio San Santiago</title>
+    <title>Fotografia Social</title>
     @php
         $logo = session('logo');
     @endphp
     <link rel="icon"
-        href="{{ $logo == 'D' || $logo == 'N' || $logo == 'C' || $logo == 'A' ? asset('estilos_tecno/img/logo3.png') : asset('estilos_tecno/img/logo1.png') }}"
+        href="{{ $logo == 'D' || $logo == 'N' || $logo == 'C' || $logo == 'A' ? asset('estilos_tecno/img/logo_fotografia_white.png') : asset('estilos_tecno/img/logo_fotografia.png') }}"
         type="image/png">
     <!-- Agrega el enlace a tu archivo de estilos generado por Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -41,11 +41,12 @@
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center">
+
                         <div class="flex-shrink-0">
                             <a href="{{ route('welcome') }}">
                                 <img class="h-8 w-8"
-                                    src="{{ $logo == 'D' || $logo == 'N' || $logo == 'C' || $logo == 'A' ? asset('estilos_tecno/img/logo3.png') : asset('estilos_tecno/img/logo1.png') }}"
-                                    alt="Consultorio San Santiago">
+                                    src="{{ $logo == 'D' || $logo == 'N' || $logo == 'C' || $logo == 'A' ? asset('estilos_tecno/img/logo_fotografia_white.png') : asset('estilos_tecno/img/logo_fotografia.png') }}"
+                                    alt="Fotografia Social">
                             </a>
                         </div>
                         <div class="hidden md:block">
@@ -53,10 +54,12 @@
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <a href="{{ route('welcome') }}"
                                     class="menu-link {{ Route::is('welcome') ? 'active' : '' }} color-texto ">Inicio</a>
-                                <a href="{{ route('servicio') }}"
-                                    class="menu-link {{ Route::is('servicio') ? 'active' : '' }} color-texto ">Servicios</a>
-                                <a href="{{ route('cita') }}"
-                                    class="menu-link {{ Route::is('cita') ? 'active' : '' }} color-texto ">Citas</a>
+                                <a href="{{ route('fotografo') }}"
+                                    class="menu-link {{ Route::is('fotografo') ? 'active' : '' }} color-texto ">Fotografos</a>
+                                <a href="{{ route('evento') }}"
+                                    class="menu-link {{ Route::is('evento') ? 'active' : '' }} color-texto ">Eventos</a>
+                                <a href="{{ route('galeria') }}"
+                                    class="menu-link {{ Route::is('galeria') ? 'active' : '' }} color-texto ">Galería</a>
                                 <a href="{{ route('pago') }}"
                                     class="menu-link {{ Route::is('pago') ? 'active' : '' }} color-texto ">Pagos</a>
 
@@ -76,7 +79,8 @@
                                         d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                                 </svg>
                             </button> --}}
-
+                            <x-dropdown-cart-compra align="right" />
+                            <x-dropdown-notifications align="right" />
                             <!-- Profile dropdown -->
                             <div class="relative ml-3">
                                 <div>
@@ -86,7 +90,7 @@
                                         <span class="absolute -inset-1.5"></span>
                                         <span class="sr-only">Open user menu</span>
                                         @auth
-                                            <img class="h-8 w-8 rounded-full " src="{{ Auth::user()->url_foto }}"
+                                            <img class="h-8 w-8 rounded-full " src="{{ Auth::user()->url_photo }}"
                                                 alt="">
 
                                         @endauth
@@ -180,10 +184,12 @@
                     <a href="{{ route('welcome') }}"
                         class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('welcome') ? 'active' : '' }} color-texto "
                         aria-current="page">Inicio</a>
-                    <a href="{{ route('servicio') }}"
-                        class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('servicio') ? 'active' : '' }} color-texto ">Servicios</a>
-                    <a href="{{ route('cita') }}"
-                        class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('cita') ? 'active' : '' }} color-texto ">Citas</a>
+                    <a href="{{ route('fotografo') }}"
+                        class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('fotografo') ? 'active' : '' }} color-texto ">Fotografo</a>
+                    <a href="{{ route('evento') }}"
+                        class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('evento') ? 'active' : '' }} color-texto ">Evento</a>
+                    <a href="{{ route('galeria') }}"
+                        class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('galeria') ? 'active' : '' }} color-texto ">Galeria</a>
                     <a href="{{ route('pago') }}"
                         class="menu-link block rounded-md px-3 py-2 text-base font-medium color-texto {{ Route::is('pago') ? 'active' : '' }} color-texto ">Pagos</a>
                     {{-- <a href="#"
@@ -194,7 +200,7 @@
                     @auth
                         <div class="flex items-center px-5">
                             <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->url_foto }}" alt="">
+                                <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->url_photo }}" alt="">
                             </div>
                             <div class="ml-3">
                                 <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}
@@ -206,7 +212,7 @@
                                 class="relative ml-auto flex-shrink-0 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
                                 <span class="absolute -inset-1.5"></span>
                                 {{-- <span class="sr-only">View notifications</span> --}}
-                                {{--<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            {{-- <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
@@ -301,10 +307,10 @@
     @if (Route::is('welcome'))
         <header class="bg-white shadow active">
             <div class="header-container">
-                <img class="header-image" src="{{ asset('estilos_tecno/img/fondo_consultorio.jpg') }}"
+                <img class="header-image" src="{{ asset('estilos_tecno/img/fondo_principal.jpg') }}"
                     alt="Logo de la empresa">
                 <div class="title-container" id="titleContainer"></div>
-                <h1 class="title-static">CONSULTORIO SAN SANTIAGO</h1>
+                <h1 class="title-static">FOTOGRAFÍA SOCIAL</h1>
             </div>
         </header>
     @endif

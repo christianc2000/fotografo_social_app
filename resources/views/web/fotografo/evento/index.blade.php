@@ -130,7 +130,10 @@
                                                     class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     Estado
                                                 </th>
-
+                                                <th scope="col"
+                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                    Participación
+                                                </th>
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     Fecha del evento
@@ -187,6 +190,20 @@
                                                         @endif
 
                                                     </td>
+                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                        @if (isset($evento->pivot['fecha_aceptacion']))
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Aceptada
+                                                            </div>
+                                                        @else
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-red-500 gap-x-2 bg-red-100/60 dark:bg-gray-800">
+                                                                No aceptada
+                                                            </div>
+                                                        @endif
+
+                                                    </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div>
                                                             <h4 class="text-gray-700 dark:text-gray-200">
@@ -210,18 +227,19 @@
                                                                 </svg>
                                                             </button>
                                                             <div id="myDropdown" class="dropdown-content">
-                                                                @if ($evento->estado == \App\Models\Evento::VIGENTE || $evento->estado == \App\Models\Evento::CURSO)
+                                                                {{-- @if ($evento->estado == \App\Models\Evento::VIGENTE || $evento->estado == \App\Models\Evento::CURSO)
                                                                     <a href="{{ route('organizador.evento.edit', $evento->id) }}"
                                                                         class="hover:bg-gray-200">Editar</a>
                                                                     <a href="#estado"
                                                                         class="hover:bg-gray-200">Estado</a>
                                                                 @elseif($evento->estado == \App\Models\Evento::FINALIZADO || $evento->estado == \App\Models\Evento::CANCELADO)
                                                                     <a href="#editar" class="hover:bg-gray-200">Ver</a>
-                                                                @endif
-                                                                <a href="{{ route('organizador.evento.fotografos.index', $evento->id) }}"
-                                                                    class="hover:bg-gray-200">Fotografos</a>
-                                                                <a href="#invitados"
-                                                                    class="hover:bg-gray-200">Invitados</a>
+                                                                @endif --}}
+                                                                <a href="{{route('fotografo.evento.show',$evento->id)}}" class="hover:bg-gray-200">Detalle
+                                                                    del evento</a>
+                                                                <a href="{{route('fotografo.evento.galeria',$evento->id)}}"
+                                                                    class="hover:bg-gray-200">Galeria</a>
+
                                                                 {{-- <a href="{{ route('personal.edit', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Editar</a>
                                                                 <a href="#" data-id={{ $evento->id }}

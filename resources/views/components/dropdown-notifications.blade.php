@@ -11,29 +11,67 @@
             <path class="fill-current text-slate-400 dark:text-slate-500"
                 d="M16 9.5c0-.987-.429-1.897-1.147-2.639C14.124 10.348 10.66 13 6.5 13c-.103 0-.202-.018-.305-.021C7.231 13.617 8.556 14 10 14c.449 0 .886-.04 1.307-.11L15 16v-4h-.012C15.627 11.285 16 10.425 16 9.5z" />
         </svg>
-        <div
-            class="absolute top-0 right-0 w-2.5 h-2.5 bg-rose-500 border-2 border-white dark:border-[#182235] rounded-full">
-        </div>
+        @auth
+            @if (Auth::user()->unreadNotifications->count() > 0)
+                <div
+                    class="absolute bottom-4 left-6 w-5 h-5 bg-rose-500 border-1 border-white dark:border-[#182235] rounded-full flex items-center justify-center">
+                    <span class="text-xxs text-white">{{ Auth::user()->unreadNotifications->count() }}</span>
+                </div>
+            @else
+                <div
+                    class="absolute top-0 right-0 w-2.5 h-2.5 bg-rose-500 border-2 border-white dark:border-[#182235] rounded-full">
+                </div>
+            @endif
+        @endauth
+
+
     </button>
     <!-- Modal dialog -->
     <div id="notificationModal"
-    class="origin-top-left absolute top-full right-1 z-10 min-w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1"
-    style="display: none;">
+        class="origin-top-left absolute top-full right-1 z-10 min-w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1"
+        style="display: none;">
         <ul>
-            <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
-                <a class="block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#0">
-                    <span class="block text-sm mb-2">📣 <span
-                            class="font-medium text-slate-800 dark:text-slate-100">Edit your information in a
-                            swipe</span> Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                        anim.</span>
-                    <span class="block text-xs font-medium text-slate-400 dark:text-slate-500">Feb 12, 2021</span>
-                </a>
-            </li>
+            @auth
+                @foreach (Auth::user()->notifications as $notification)
+                    @if ($notification->data['tipo'] == \App\Models\User::EVENTO)
+                        <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
+                            <a class="block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20"
+                                href="{{ route('fotografo.invitacion.show', $notification->id) }}">
+                                <span class="block text-sm mb-2">📣 <span
+                                        class="font-medium text-slate-800 dark:text-slate-100">Invitación</span> Te invitan
+                                    a participar del evento {{ $notification->data['titulo'] }}</span>
+                                <span
+                                    class="block text-xs font-medium text-slate-400 dark:text-slate-500">{{ $notification->data['time'] }}{{-- Feb 12,
+                            2021 --}}</span>
+                            </a>
+                        </li>
+                    @elseif($notification->data['tipo'] == \App\Models\User::FOTOC)
+                        <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
+                            <a class="block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20"
+                                href="{{ route('fotografo.invitacion.show', $notification->id) }}">
+                                <span class="block text-sm mb-2">📣 <span
+                                        class="font-medium text-slate-800 dark:text-slate-100">Aparición</span> Apareciste en un fotografía con el título {{ $notification->data['titulo'] }}</span>
+                                <span
+                                    class="block text-xs font-medium text-slate-400 dark:text-slate-500">{{ $notification->data['time'] }}{{-- Feb 12,
+                        2021 --}}</span>
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
+            @endauth
+
 
         </ul>
     </div>
 </div>
+{{-- css --}}
+<style>
+    .text-xxs {
+        font-size: 0.6rem;
+    }
+</style>
 
+{{-- js --}}
 <script>
     document.getElementById('notificationButton').addEventListener('click', function(event) {
         event.preventDefault();

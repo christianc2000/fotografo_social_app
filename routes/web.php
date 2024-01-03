@@ -5,7 +5,11 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
+use App\Http\Controllers\Web\Cliente\CarritoController;
+use App\Http\Controllers\Web\Fotografo\EventoController as FotografoEventoController;
+use App\Http\Controllers\Web\Fotografo\InvitacionController;
 use App\Http\Controllers\Web\Organizador\EventoController;
+use App\Http\Controllers\Web\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,26 +24,30 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::get('/', [ClienteController::class, 'inicial'])->name('welcome');
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+// Route::get('/', function () {
+//     return redirect()->route('login');
+// });
 Route::get('/configuracion', function () {
-    return view('cliente.configuracion');
+    return view('web.cliente.configuracion');
 })->name('configuracion');
 
-// Route::get('/servicios', [ClienteController::class, 'servicios'])->name('servicio');
+ Route::get('/fotografo', function(){
+    return "Vista fotografos";
+ })->name('fotografo');
 
-Route::get('/cita', function () {
-    return view('cliente.cita');
-})->name('cita');
+Route::get('/evento', function () {
+    return "Vista eventos";
+})->name('evento');
+
+Route::get('/galeria', function () {
+    //return view('cliente.pago');
+    return "Vista galeria";
+})->name('galeria');
 
 Route::get('/pago', function () {
-    return view('cliente.pago');
+    return "Vista pago";
 })->name('pago');
-
-Route::get('/home', function () {
-    return "Bienvenido a home";
-})->name('home');
 // Route::middleware([
 //     'auth:sanctum',
 //     config('jetstream.auth_session'),
@@ -74,33 +82,30 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Organizador
     Route::prefix('organizador')->group(function () {
         //Evento rutas
-        Route::resource('evento',EventoController::class)->names('organizador.evento');
+        Route::resource('evento', EventoController::class)->names('organizador.evento');
+        Route::get('evento/{id}/fotografos', [EventoController::class, 'fotografosEvento'])->name('organizador.evento.fotografos.index');
+        Route::get('evento/{id}/agregar/fotografos', [EventoController::class, 'agregarFotografo'])->name('organizador.evento.fotografos.agregar');
+        Route::post('evento/{id}/agregar/fotografos', [EventoController::class, 'agregarFotografoStore'])->name('organizacion.evento.fotografos.agregar.store');
     });
-    //ADMINISTRADOR
-    // Gestionar Personal
-    // Route::prefix('admin')->group(function () {
-    //     Route::resource('/personal', PersonalController::class)->names('personal');
-    //     // Gestionar Servicio
-    //     Route::resource('/servicio', ServicioController::class)->names('servicio');
-    //     //Gestionar Turno
-    //     Route::resource('/turno', TurnoController::class)->names('turno');
-    //     Route::post('/turno/estado', [TurnoController::class, 'finalizarTurno'])->name('turno.finalizar');
-    //     //Reportes
-    //     route::resource('/estadistica', EstadisticaController::class)->names('estadistica');
-    // });
-    // Route::prefix('enfermeria')->group(function () {
-    //     Route::resource('/citas', EnfermeraController::class)->names('enfermeria.citas');
-    //     Route::resource('/citascreate', EnfermeraController::class)->names('enfermeria.citas.create');
+    //Fotografo
+    Route::prefix('fotografo')->group(function () {
+        Route::resource('evento', FotografoEventoController::class)->names('fotografo.evento');
+        Route::resource('invitacion', InvitacionController::class)->names('fotografo.invitacion');
+        Route::get('evento/{id}/galeria',[FotografoEventoController::class,'galeria'])->name('fotografo.evento.galeria');
+        Route::get('evento/{id}/galeria/agregar',[FotografoEventoController::class,'agregarImagenes'])->name('fotografo.evento.galeria.agregar');
+        Route::get('evento/galeria/imagen/{id}/editar',[FotografoEventoController::class,'editarImage'])->name('fotografo.evento.galeria.editar');
+        Route::put('evento/galeria/imagen/{id}/update',[FotografoEventoController::class,'updateImage'])->name('fotografo.evento.galeria.update');
+    });
 
-    //     // Ruta para mostrar el formulario de edición
-    //     Route::get('/citas/{cita}/edit', [EnfermeraController::class, 'edit'])->name('enfermeria.citas.edit');
-
-    //     // Ruta para actualizar la cita
-    //     // Route::put('/citas/{cita}', [EnfermeraController::class, 'update'])->name('enfermeria.citas.update');
-    //     // Ruta para eliminar la cita
-    //     Route::delete('/citas/{cita}', [EnfermeraController::class, 'destroy'])->name('enfermeria.citas.destroy');
-    // });
+    Route::prefix('cliente')->group(function(){
+         Route::resource('carrito',CarritoController::class)->names('cliente.carrito');
+    });
 });
+
+//Vistas principales sin auth
+
+
+
 
 Route::get('login', function () {
     return view('auth.login');

@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Orden extends Model
+{
+    use HasFactory;
+    //TIPO DE ORDEN
+    const CARRITO = "CARRITO DE COMPRA";
+    const COMPRA = "COMPRA REALIZADA";
+
+    //ESTADO DE ORDEN
+    const RECIBIDA = "RECIBIDA";
+    const CAMINO = "EN CAMINO";
+    const ENTREGADA = "ENTREGADA";
+    //TIPO DE ENTREGA
+    const DOMICILIO = "Entrega a domicilio";
+    const ONLINE = "Descarga online";
+
+    protected $fillable = [
+        'direccion_envio',
+        'correo_orden',
+        'fecha_orden',
+        'estado_orden',
+        'tipo_entrega',
+        'tipo',
+        'total',
+        'user_id'
+    ];
+
+    //relación inversa
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    //relación de 1 a muchos
+    public function imagenesOrden(){
+        return $this->hasMany(ImageOrden::class);
+    }
+}

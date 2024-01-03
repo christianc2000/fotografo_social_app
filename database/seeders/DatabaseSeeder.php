@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(DashboardTableSeeder::class);
         $this->call(EventoSeeder::class);
+        $this->call(EventoUserSeeder::class);
+        $this->call(VinculadoSeeder::class);
+        $this->call(ImageSeeder::class);
+        $this->call(OrdenSeeder::class);
+        $this->call(ImageOrdenSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

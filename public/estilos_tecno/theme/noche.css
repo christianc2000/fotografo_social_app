@@ -33,6 +33,7 @@ nav.navegacion {
 }
 .body-background{
     background-color: #274242;
+    min-height: 100vh;
 }
 .card-background{
     background-color: #708090;
