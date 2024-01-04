@@ -117,7 +117,7 @@ class User extends Authenticatable
             ->where('tipo', 'F')
             ->withPivot('estado')->withTimestamps();
     }
-
+   
     public function images()
     {
         return $this->hasMany(Image::class);
@@ -127,5 +127,9 @@ class User extends Authenticatable
     public function ordens()
     {
         return $this->hasMany(Orden::class);
+    }
+
+    public function suscripcions(){
+        return $this->hasMany(Suscripcion::class);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Cliente\ImageController;
+use App\Http\Controllers\Api\Cliente\InvitacionController as ClienteInvitacionController;
+use App\Http\Controllers\Api\Cliente\MovilController;
 use App\Http\Controllers\Api\Cliente\PaymenController;
 use App\Http\Controllers\Api\Fotografo\ImagesController;
 use App\Http\Controllers\Api\Fotografo\InvitacionController;
@@ -31,6 +33,14 @@ Route::prefix('fotografo')->group(function () {
 Route::prefix('cliente')->group(function () {
     Route::post('add-cart', [ImageController::class, 'addCarrito'])->name('cliente.add.carrito');
     Route::post('del-cart', [ImageController::class, 'delCarrito'])->name('cliente.del.carrito');
+    Route::post('accept-invitacion', [ClienteInvitacionController::class, 'aceptarInvitacion'])->name('cliente.accept.invitacion');
 });
 Route::post('/urlcallback', [PaymenController::class, 'urlCallback']);
 
+// MOVIL
+Route::post('/login',[MovilController::class,'login']);
+Route::post('/eventos',[MovilController::class,'eventos']);
+Route::post('/evento',[MovilController::class,'miEvento']);
+Route::post('/evento/galeria',[MovilController::class,'galeriaEvento']);
+Route::post('/galeria',[MovilController::class,'galeria']);
+Route::post('/notificaciones',[MovilController::class,'notificaciones']);

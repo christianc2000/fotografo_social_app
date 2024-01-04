@@ -4,19 +4,39 @@
 
             <div class="card-body">
                 <!-- component -->
-                <section class="container px-4 mx-auto">
+                <section class="container px-4 mx-auto py-2">
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-700 dark:text-white">Eventos</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Cliente</h2>
 
-                                {{-- <span
-                                    class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
-                                    vendors</span> --}}
+
+                                @if ($evento->estado == \App\Models\Evento::VIGENTE)
+                                    <span
+                                        class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+                                        Vigente
+                                    </span>
+                                @elseif($evento->estado == \App\Models\Evento::CURSO)
+                                    <span
+                                        class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+                                        En curso
+                                    </span>
+                                @elseif($evento->estado == \App\Models\Evento::FINALIZADO)
+                                    <span
+                                        class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+                                        Finalizado
+                                    </span>
+                                @elseif($evento->estado == \App\Models\Evento::CANCELADO)
+                                    <span
+                                        class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+                                        Cancelado
+                                    </span>
+                                @endif
+
                             </div>
 
-                            {{-- <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">These companies have purchased in
-                                the last 12 months.</p> --}}
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Los clientes pertenecientes al
+                                evento {{ $evento->titulo }}</p>
                         </div>
 
                         <div class="flex items-center mt-4 gap-x-3">
@@ -39,15 +59,15 @@
 
                                 <span>Import</span>
                             </button> --}}
-                            {{-- <a href="{{ route('organizador.evento.create') }}"
+                            <a href="{{ route('organizador.evento.cliente.agregar', $evento->id) }}"
                                 class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Agregar Evento</span>
-                            </a> --}}
+                                <span>Vincular Cliente al evento</span>
+                            </a>
 
                         </div>
 
@@ -59,25 +79,16 @@
                                 Ver todo
                             </button>
 
-                            <button id="btn-vigente"
+                            <button id="btn-en-espera"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Vigentes
+                                En espera
                             </button>
 
-                            <button id="btn-en-curso"
+                            <button id="btn-aceptado"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                En curso
+                                Aceptado
                             </button>
 
-                            <button id="btn-finalizado"
-                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Finalizados
-                            </button>
-
-                            <button id="btn-cancelado"
-                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Cancelados
-                            </button>
                         </div>
 
                         {{-- <div class="relative flex items-center mt-4 md:mt-0">
@@ -95,18 +106,18 @@
                         </div> --}}
                     </div>
 
-                    <div class="flex flex-col mt-6 px-2">
+                    <div class="flex flex-col mt-6">
                         <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="border border-gray-200 dark:border-gray-700 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                                        id="tabla-evento">
+                                        id="tabla-fotografo">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
                                             <tr class="encabezado">
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Evento</span>
+                                                        <span>Cliente</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -128,15 +139,12 @@
 
                                                 <th scope="col"
                                                     class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Estado
-                                                </th>
-                                                <th scope="col"
-                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     Participación
                                                 </th>
+
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Fecha del evento
+                                                    Fecha de vinculación
                                                 </th>
 
                                                 {{-- <th scope="col"
@@ -145,71 +153,53 @@
                                                 <th scope="col" class="relative py-3.5 px-4">
                                                     <span class="sr-only"></span>
                                                 </th>
-
                                             </tr>
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($eventos as $evento)
-                                                <tr data-tipo="{{ $evento->estado }}">
+                                            @foreach ($clientes as $cliente)
+                                                <tr data-tipo="{{ $cliente->pivot->estado }}">
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
                                                             <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-fill"
-                                                                src="{{ $evento->img_evento }}" alt="">
+                                                                src="{{ $cliente->url_photo }}" alt="">
                                                             <div class="min-w-0 flex-auto">
                                                                 <p
-                                                                    class="text-sm leading-6 font-medium text-gray-700 dark:text-white">
-                                                                    {{ $evento->titulo }}</p>
+                                                                    class="text-sm font-semibold leading-6 text-gray-700 dark:text-white">
+                                                                    {{ $cliente->name }} {{ $cliente->lastname }}
+                                                                </p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $evento->direccion }}</p>
+                                                                    {{ $cliente->email }}</p>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if ($evento->estado == \App\Models\Evento::VIGENTE)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-blue-500 gap-x-2 bg-blue-100/60 dark:bg-gray-800">
-                                                                Vigente
-                                                            </div>
-                                                        @elseif($evento->estado == \App\Models\Evento::CURSO)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                En curso
-                                                            </div>
-                                                        @elseif($evento->estado == \App\Models\Evento::FINALIZADO)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-gray-500 gap-x-2 bg-gray-100/60 dark:bg-gray-800">
-                                                                Finalizado
-                                                            </div>
-                                                        @elseif($evento->estado == \App\Models\Evento::CANCELADO)
+
+                                                        @if ($cliente->pivot->estado == \App\Models\Evento::ESPERA)
                                                             <div
                                                                 class="inline px-3 py-1 text-sm font-normal rounded-full text-red-500 gap-x-2 bg-red-100/60 dark:bg-gray-800">
-                                                                Cancelado
+                                                                En espera
+                                                            </div>
+                                                        @elseif($cliente->pivot->estado == \App\Models\Evento::ACEPTADO)
+                                                            <div
+                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
+                                                                Aceptado
                                                             </div>
                                                         @endif
 
                                                     </td>
-                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if (isset($evento->pivot['fecha_aceptacion']))
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                Aceptada
-                                                            </div>
-                                                        @else
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-red-500 gap-x-2 bg-red-100/60 dark:bg-gray-800">
-                                                                No aceptada
-                                                            </div>
-                                                        @endif
-
-                                                    </td>
-                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                    <td
+                                                        class="px-4 py-4 text-sm whitespace-nowrap flex items-center justify-center">
                                                         <div>
-                                                            <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ $evento->fecha_evento }}</h4>
-                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
-                                                                news into one place</p> --}}
+                                                            <h4 class="text-gray-700 dark:text-gray-200 text-center">
+                                                                @if (isset($cliente->pivot->fecha_aceptacion))
+                                                                    {{ $cliente->pivot->fecha_aceptacion }}
+                                                                @else
+                                                                    -
+                                                                @endif
+                                                            </h4>
+                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your news into one place</p> --}}
                                                         </div>
                                                     </td>
                                                     {{-- <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -227,24 +217,16 @@
                                                                 </svg>
                                                             </button>
                                                             <div id="myDropdown" class="dropdown-content">
-                                                                {{-- @if ($evento->estado == \App\Models\Evento::VIGENTE || $evento->estado == \App\Models\Evento::CURSO)
-                                                                    <a href="{{ route('organizador.evento.edit', $evento->id) }}"
-                                                                        class="hover:bg-gray-200">Editar</a>
-                                                                    <a href="#estado"
-                                                                        class="hover:bg-gray-200">Estado</a>
-                                                                @elseif($evento->estado == \App\Models\Evento::FINALIZADO || $evento->estado == \App\Models\Evento::CANCELADO)
-                                                                    <a href="#editar" class="hover:bg-gray-200">Ver</a>
-                                                                @endif --}}
-                                                                <a href="{{route('fotografo.evento.show',$evento->id)}}" class="hover:bg-gray-200">Detalle
-                                                                    del evento</a>
-                                                                <a href="{{route('fotografo.evento.galeria',$evento->id)}}"
-                                                                    class="hover:bg-gray-200">Galeria</a>
-
-                                                                {{-- <a href="{{ route('personal.edit', $evento->id) }}"
-                                                                    class="hover:bg-gray-200">Editar</a>
-                                                                <a href="#" data-id={{ $evento->id }}
-                                                                    data-name="{{ $evento->name }} {{ $evento->lastname }}"
-                                                                    class="deleteBtn hover:bg-gray-200">Eliminar</a> --}}
+                                                                <a href="#clientes" class="hover:bg-gray-200">Perfil</a>
+                                                                @if ($cliente->pivot->estado == \App\Models\Evento::ESPERA)
+                                                                    <form action="{{ route('email.send') }}" class="w-full"
+                                                                        method="POST">
+                                                                        @csrf
+                                                                        <input type="hidden" name="email" value="{{$cliente->email}}">
+                                                                        <input type="hidden" name="evento" value="{{$evento->id}}">
+                                                                        <button type="submit" class="hover:bg-gray-200 w-full">Reenviar invitación</button>
+                                                                    </form>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </td>
@@ -380,7 +362,12 @@
             text-decoration: none;
             display: block;
         }
-
+        .dropdown-content button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
         /* Muestra el menú desplegable cuando se hace clic en el botón */
         .show {
             display: block;
@@ -463,39 +450,23 @@
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Muestra todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').show();
+            $('#tabla-fotografo tr:not(.encabezado)').show();
         });
-        $('#btn-vigente').click(function() {
+        $('#btn-en-espera').click(function() {
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
+            $('#tabla-fotografo tr:not(.encabezado)').hide();
             // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-evento tr[data-tipo="VIGENTE"]:not(.encabezado)').show();
+            $('#tabla-fotografo tr[data-tipo="EN ESPERA"]:not(.encabezado)').show();
         });
-        $('#btn-en-curso').click(function() {
+        $('#btn-aceptado').click(function() {
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
+            $('#tabla-fotografo tr:not(.encabezado)').hide();
             // Muestra solo las filas que corresponden a médicos
-            $('#tabla-evento tr[data-tipo="EN CURSO"]:not(.encabezado)').show();
-        });
-        $('#btn-finalizado').click(function() {
-            $('.btn').removeClass('btn-activo');
-            $(this).addClass('btn-activo');
-            // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
-            // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-evento tr[data-tipo="FINALIZADO"]:not(.encabezado)').show();
-        });
-        $('#btn-cancelado').click(function() {
-            $('.btn').removeClass('btn-activo');
-            $(this).addClass('btn-activo');
-            // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
-            // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-evento tr[data-tipo="CANCELADO"]:not(.encabezado)').show();
+            $('#tabla-fotografo tr[data-tipo="ACEPTADO"]:not(.encabezado)').show();
         });
     </script>
     <script>

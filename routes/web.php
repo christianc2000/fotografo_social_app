@@ -6,10 +6,17 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\Web\Cliente\CarritoController;
+use App\Http\Controllers\Web\Cliente\EventoController as ClienteEventoController;
 use App\Http\Controllers\Web\Cliente\GaleriaController;
+use App\Http\Controllers\Web\Cliente\InvitacionController as ClienteInvitacionController;
+use App\Http\Controllers\Web\Cliente\PagoController;
 use App\Http\Controllers\Web\Fotografo\EventoController as FotografoEventoController;
 use App\Http\Controllers\Web\Fotografo\InvitacionController;
+use App\Http\Controllers\Web\Organizador\ClienteController;
 use App\Http\Controllers\Web\Organizador\EventoController;
+use App\Http\Controllers\Web\Organizador\FotografoController;
+use App\Http\Controllers\Web\PlanController;
+use App\Http\Controllers\Web\SuscripcionController;
 use App\Http\Controllers\Web\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -87,6 +94,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('evento/{id}/fotografos', [EventoController::class, 'fotografosEvento'])->name('organizador.evento.fotografos.index');
         Route::get('evento/{id}/agregar/fotografos', [EventoController::class, 'agregarFotografo'])->name('organizador.evento.fotografos.agregar');
         Route::post('evento/{id}/agregar/fotografos', [EventoController::class, 'agregarFotografoStore'])->name('organizacion.evento.fotografos.agregar.store');
+        Route::get('evento/{id}/clientes', [ClienteController::class, 'index'])->name('organizador.evento.cliente.index');
+        Route::get('evento/{id}/agregar/cliente', [ClienteController::class, 'agregarCliente'])->name('organizador.evento.cliente.agregar');
+        Route::post('evento/{id}/agreger/cliente', [ClienteController::class, 'agregarClienteStore'])->name('organizacion.evento.cliente.agregar.store');
+        Route::post('evento/{id}/agregar/cliente/correo', [ClienteController::class, 'agregarClienteCorreoStore'])->name('organizacion.evento.cliente.agregar.correo.store');
+        Route::post('send-email', [ClienteController::class, 'sendEmail'])->name('email.send');
+        Route::get('vincular/fotografo', [FotografoController::class, 'vincularFotografo'])->name('organizador.vincular.fotografo');
+        Route::post('vincular/fotografo', [FotografoController::class, 'vincularFotografoStore'])->name('organizador.vincular.fotografo.store');
     });
     //Fotografo
     Route::prefix('fotografo')->group(function () {
@@ -101,15 +115,26 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('cliente')->group(function () {
         Route::resource('carrito', CarritoController::class)->names('cliente.carrito');
         Route::get('/payments/generate_payment', [CarritoController::class, 'generatePayment']);
-        Route::get('galeria/{id}',[GaleriaController::class,'show'])->name('cliente.aparicion.show'); //id de la foto de la gaeria donde aparece
-        Route::get('galeria/',[GaleriaController::class,'index'])->name('cliente.galeria.index');
-        Route::get('galeria/{id}/ver',[GaleriaController::class,'ver'])->name('cliente.galeria.ver');
+        Route::get('galeria/{id}', [GaleriaController::class, 'show'])->name('cliente.aparicion.show'); //id de la foto de la gaeria donde aparece
+        Route::get('galeria/', [GaleriaController::class, 'index'])->name('cliente.galeria.index');
+        Route::get('galeria/{id}/ver', [GaleriaController::class, 'ver'])->name('cliente.galeria.ver');
+        Route::resource('pago', PagoController::class)->names('cliente.pago');
+        Route::resource('evento', ClienteEventoController::class)->names('cliente.evento');
+        Route::resource('invitacion', ClienteInvitacionController::class)->names('cliente.invitacion');
+        Route::get('accept-invitation/{id}', [ClienteController::class, 'acceptInvitation']);
+        Route::post('accept-invitation/{id}', [ClienteController::class, 'storeAccept'])->name('email.accept');
     });
 });
 
-//Vistas principales sin auth
-
-
+//Plan
+Route::resource('plan', PlanController::class)->names('plan');
+Route::get('registrar/plan/{id}/organizador', [PlanController::class, 'registrarOrganizador'])->name('plan.registrar.organizador');
+Route::post('registrar/plan/{id}/organizador', [PlanController::class, 'registrarOrganizadorStore'])->name('plan.registrar.organizador.store');
+Route::get('registrar/plan/{id}/fotografo', [PlanController::class, 'registrarFotografo'])->name('plan.registrar.fotografo');
+Route::post('registrar/plan/{id}/fotografo', [PlanController::class, 'registrarFotografoStore'])->name('plan.registrar.fotografo.store');
+Route::get('plan-fotografo', [PlanController::class, 'indexFotografo'])->name('plan.fotografo');
+// Suscripcion
+Route::resource('suscripcion', SuscripcionController::class)->names('suscripcion');
 //********************** reporte *********************************/
 Route::get('/report/order/pdf', [PaymenController::class, 'generatePdfOrder']);
 

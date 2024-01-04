@@ -220,7 +220,7 @@
                                                                 @endif
                                                                 <a href="{{ route('organizador.evento.fotografos.index', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Fotografos</a>
-                                                                <a href="#invitados"
+                                                                <a href="{{route('organizador.evento.cliente.index',$evento->id)}}"
                                                                     class="hover:bg-gray-200">Invitados</a>
                                                                 {{-- <a href="{{ route('personal.edit', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Editar</a>

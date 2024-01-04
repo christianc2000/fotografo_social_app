@@ -124,9 +124,9 @@ class ImagesController extends BaseController
                 ];
 
                 $compareFacesResult = $client_rekognition->compareFaces([
-                    'SourceImage' => $sourceImage,
-                    'TargetImage' => $targetImage,
-                    'SimilarityThreshold' => 70.0, // Puedes ajustar este valor según tus necesidades
+                    'SourceImage' => $targetImage,
+                    'TargetImage' => $sourceImage,
+                    'SimilarityThreshold' => 60.0, // Puedes ajustar este valor según tus necesidades
                 ]);
 
                 if (count($compareFacesResult['FaceMatches']) > 0) {

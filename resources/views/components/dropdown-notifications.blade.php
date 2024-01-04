@@ -34,23 +34,40 @@
             @auth
                 @foreach (Auth::user()->notifications as $notification)
                     @if ($notification->data['tipo'] == \App\Models\User::EVENTO)
+                        @if (Auth::user()->tipo == 'F')
+                            <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
+                                <a class="block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20"
+                                    href="{{ route('fotografo.invitacion.show', $notification->id) }}">
+                                    <span class="block text-sm mb-2">📣 <span
+                                            class="font-medium text-slate-800 dark:text-slate-100">Invitación</span> Te
+                                        invitan
+                                        a participar del evento {{ $notification->data['titulo'] }}</span>
+                                    <span
+                                        class="block text-xs font-medium text-slate-400 dark:text-slate-500">{{ $notification->data['time'] }}{{-- Feb 12,
+                        2021 --}}</span>
+                                </a>
+                            </li>
+                        @elseif (Auth::user()->tipo=="C")
                         <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
                             <a class="block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20"
-                                href="{{ route('fotografo.invitacion.show', $notification->id) }}">
+                                href="{{ route('cliente.invitacion.show', $notification->id) }}">
                                 <span class="block text-sm mb-2">📣 <span
-                                        class="font-medium text-slate-800 dark:text-slate-100">Invitación</span> Te invitan
+                                        class="font-medium text-slate-800 dark:text-slate-100">Invitación</span> Te
+                                    invitan
                                     a participar del evento {{ $notification->data['titulo'] }}</span>
                                 <span
                                     class="block text-xs font-medium text-slate-400 dark:text-slate-500">{{ $notification->data['time'] }}{{-- Feb 12,
-                            2021 --}}</span>
+                    2021 --}}</span>
                             </a>
                         </li>
+                        @endif
                     @elseif($notification->data['tipo'] == \App\Models\User::FOTOC)
                         <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
                             <a class="block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20"
                                 href="{{ route('cliente.aparicion.show', $notification->id) }}">
                                 <span class="block text-sm mb-2">📣 <span
-                                        class="font-medium text-slate-800 dark:text-slate-100">Aparición</span> Apareciste en un fotografía con el título {{ $notification->data['titulo'] }}</span>
+                                        class="font-medium text-slate-800 dark:text-slate-100">Aparición</span> Apareciste
+                                    en un fotografía con el título {{ $notification->data['titulo'] }}</span>
                                 <span
                                     class="block text-xs font-medium text-slate-400 dark:text-slate-500">{{ $notification->data['time'] }}{{-- Feb 12,
                         2021 --}}</span>

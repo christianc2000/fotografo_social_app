@@ -26,6 +26,7 @@ class ImageController extends BaseController
        
         $user = User::find($request->user_id);
         $orden = $user->ordens->where('tipo', Orden::CARRITO)->first();
+    //   return $this->sendResponse($orden,"success");
         $imagen = Image::find($request->image_id);
         if (isset($orden)) {
             $imagenO=ImageOrden::create([
@@ -44,17 +45,19 @@ class ImageController extends BaseController
 
             return $this->sendResponse(["orden"=>$orden,"imagen"=>$imagen], "Carrito añadido exitosamente");
         } else {
-            $newOrden = Orden::crete([
+            $newOrden = Orden::create([
                 'tipo' => Orden::CARRITO,
                 'total' => $imagen->precio,
                 'user_id' => $user->id
             ]);
+       
             $imagenO=ImageOrden::create([
                 'url' => $imagen->url_baja,
                 'costo' => $imagen->precio,
                 'image_id' => $imagen->id,
                 'orden_id' => $newOrden->id
             ]);
+            $newOrden = Orden::with('imagenesOrden')->find($newOrden->id);
             return $this->sendResponse(["orden"=>$newOrden,"imagen"=>$imagen], "Carrito añadido exitosamente");
         }
     }

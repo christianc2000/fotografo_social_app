@@ -60,7 +60,16 @@ class EventoController extends Controller
             return view('pages/utility/404');
         }
     }
-
+    public function vincularFotografo($id)
+    {
+        $user = Auth::user();
+        if ($user->tipo == 'O') {
+            $user->fotografos()->attach($id, ['organizador_id' => $user->id, 'fotografo_id' => $id]);
+            return redirect()->route('organizador.vincular.fotografo')->with('mensaje', "fotografo vinculado exitosamente");
+        } else {
+            return view('pages/utility/404');
+        }
+    }
     public function edit($id)
     {
         $evento = Evento::find($id);

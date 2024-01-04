@@ -19,6 +19,7 @@ class EventoController extends Controller
         $user = Auth::user();
         if ($user->tipo == "F") {
             $eventos = $user->vinculacionEvento()->orderByDesc('updated_at')->get();
+          
             return view('web.fotografo.evento.index', compact('eventos'));
         } else {
             return view('pages.utility.404');

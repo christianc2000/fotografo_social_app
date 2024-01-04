@@ -25,8 +25,8 @@
                             </div>
                             {{-- componente --}}
                             <div class="relative mt-10 w-full flex flex-col text-gray-500 rounded cursor-pointer"
-                                style="height: 500px">
-                                <img src="{{ $image->url }}" class="object-contain w-full h-full" alt="">
+                                style="height: 140px">
+                                <img src="{{ $image->url }}" class="object-contain w-32 h-32" alt=""  oncontextmenu="return false;">
                             </div>
                             <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-6 mb-4 mt-5">
                                 <div class="col-span-full mb-2">

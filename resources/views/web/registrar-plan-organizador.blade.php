@@ -1,13 +1,13 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <h3 class="text-lg font-medium text-gray-600 dark:text-white justify-center text-center">REGISTRO</h3>
+            <h3 class="text-lg font-medium text-gray-600 dark:text-white justify-center text-center">REGISTRAR ORGANIZADOR</h3>
             <x-authentication-card-logo />
         </x-slot>
 
         <x-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('plan.registrar.organizador.store',$plan->id) }}" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -41,13 +41,6 @@
                 </select>
             </div>
 
-            <div class="mb-4">
-                <label for="direccion" class="block mb-2 text-sm text-gray-600">Dirección</label>
-                <input type="text" id="direccion" name="direccion" value="{{ old('direccion') }}" required
-                    autocomplete="direccion"
-                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                    required>
-            </div>
             <div class="mb-4">
                 <label for="email" class="block mb-2 text-sm text-gray-600">Correo</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}"

@@ -19,7 +19,7 @@
                 @if (Auth::user()->tipo == 'O')
                     Organizador
                 @endif
-                @if (Auth::user()->tipo == 'Fotografo')
+                @if (Auth::user()->tipo == 'F')
                     Fotografo
                 @endif
             </div>

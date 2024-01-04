@@ -23,6 +23,8 @@
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="{{ asset('../estilos_tecno/js/nav.js') }}"></script>
     <script src="{{ asset('../estilos_tecno/js/carousel.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
     {{-- <script src="{{ asset('estilos_tecno/js/carrito.js') }}"></script> --}}
     {{-- bootstrap 5 --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
@@ -56,14 +58,14 @@
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <a href="{{ route('welcome') }}"
                                     class="menu-link {{ Route::is('welcome') ? 'active' : '' }} color-texto ">Inicio</a>
-                                <a href="{{ route('fotografo') }}"
-                                    class="menu-link {{ Route::is('fotografo') ? 'active' : '' }} color-texto ">Fotografos</a>
-                                <a href="{{ route('evento') }}"
-                                    class="menu-link {{ Route::is('evento') ? 'active' : '' }} color-texto ">Eventos</a>
+                                {{-- <a href="{{ route('fotografo') }}"
+                                    class="menu-link {{ Route::is('fotografo') ? 'active' : '' }} color-texto ">Fotografos</a> --}}
+                                <a href="{{ route('cliente.evento.index') }}"
+                                    class="menu-link {{ Route::is('cliente.evento.index') ? 'active' : '' }} color-texto ">Eventos</a>
                                 <a href="{{ route('cliente.galeria.index') }}"
                                     class="menu-link {{ Route::is('cliente.galeria.index') ? 'active' : '' }} color-texto ">Galería</a>
-                                <a href="{{ route('pago') }}"
-                                    class="menu-link {{ Route::is('pago') ? 'active' : '' }} color-texto ">Pagos</a>
+                                <a href="{{ route('cliente.pago.index') }}"
+                                    class="menu-link {{ Route::is('cliente.pago.index') ? 'active' : '' }} color-texto ">Pagos</a>
 
                             </div>
                         </div>
@@ -121,7 +123,7 @@
                                         <hr>
                                         <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-0">Perfil</a>
-                                        @if (Auth::user()->tipo != 'P')
+                                        @if (Auth::user()->tipo != 'C')
                                             <a href="{{ route('dashboard') }}"
                                                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                                                 id="user-menu-item-0">Dashboard</a>
@@ -143,6 +145,14 @@
 
                                     <!-- Menú si no está autenticado -->
                                     @guest
+                                        <a href="{{ route('plan.index') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem" tabindex="-1" id="user-menu-item-0">Registrar
+                                            como Organizador</a>
+                                        <a href="{{ route('plan.fotografo') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem" tabindex="-1" id="user-menu-item-0">Registrar
+                                            como Fotografo</a>
                                         <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-gray-700"
                                             role="menuitem" tabindex="-1" id="user-menu-item-0">Register</a>
                                         <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700"
@@ -222,7 +232,7 @@
                             </button> --}}
                         </div>
                         <div class="mt-3 space-y-1 px-2">
-                            @if (Auth::user()->tipo != 'P')
+                            @if (Auth::user()->tipo != 'C')
                                 <a href="#"
                                     class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Perfil</a>
                                 <a href="{{ route('dashboard') }}"
@@ -289,6 +299,12 @@
                                 </button> --}}
                             </div>
                             <div class="mt-3 space-y-1 px-2">
+                                <a href="{{ route('plan.index') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Registrar
+                                    como Organizador</a>
+                                <a href="{{ route('suscripcion.index') }}"
+                                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Registrar
+                                    como Fotografo</a>
                                 <a href="{{ route('register') }}"
                                     class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Register</a>
 

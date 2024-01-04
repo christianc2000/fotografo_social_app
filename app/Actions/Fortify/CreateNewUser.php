@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
@@ -21,45 +22,40 @@ class CreateNewUser implements CreatesNewUsers
     {   
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => $this->passwordRules(),
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-            'ci' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'birth_date' => ['required', 'date'],
-            'celular' => ['required', 'string', 'max:255'],
+            'fecha_nacimiento' => ['required', 'date'],
             'genero' => ['required', 'string', 'max:1'],
-            'residencia_actual' => ['required', 'string', 'max:255'],
-            'url_foto' => ['nullable', 'string', 'max:255'],
-            'ocupacion' => ['nullable', 'string', 'max:255'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'imagen'=>['required','image','mimes:jpeg,png,jpg,gif','max:2048'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ])->validate();
-
-       
-
-        $user = User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'ci' => $input['ci'],
-            'lastname' => $input['lastname'],
-            'birth_date' => $input['birth_date'],
-            'celular' => $input['celular'],
-            'tipo' => "P",
-            'url_foto' => "https://rekognitions3-bucket.s3.amazonaws.com/Tecno/perfil/usuario_default.jpeg",
-            'genero' => $input['genero'],
-            'residencia_actual' => $input['residencia_actual'],
-            'ocupacion' => $input['ocupacion'],
-        ]);
-
-            // $user->assignRole('cliente');
-       
-
-        if (isset($input['url_foto']) && $input['url_foto']) {
-            $path = $input['url_foto'];
-            $user->update(['url_foto' => $path]);
+     
+        if ($input['imagen']) {
+            // Subir la nueva imagen
+            $imagen = $input['imagen'];
+            $nombreImagen = time() . '_' . $input['name'] . '_evento' . '.png';
+            $path = Storage::disk('s3')->putFileAs(
+                'fotografia_app/perfil',
+                $imagen,
+                $nombreImagen,
+                'public'
+            );
+            $urlImagen = Storage::disk('s3')->url($path);
+            // Registra usuarios cliente
+            $user = User::create([
+                'name' => $input['name'],
+                'lastname' => $input['lastname'],
+                'fecha_nacimiento' => $input['fecha_nacimiento'],
+                'genero' => $input['genero'],
+                'direccion_envio' => $input['direccion'],
+                'gps'=>'-17.82858,-63.11273',
+                'email' => $input['email'],
+                'tipo'=>"C",
+                'url_photo'=>$urlImagen,
+                'password' => Hash::make($input['password']),
+            ]);
         }
-
-
         return $user;
     }
 }

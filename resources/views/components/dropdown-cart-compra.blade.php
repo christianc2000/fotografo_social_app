@@ -14,8 +14,13 @@
         @auth
             <div
                 class="absolute bottom-4 left-6 w-5 h-5 bg-rose-500 border-1 border-white dark:border-[#182235] rounded-full flex items-center justify-center">
-                <span id="cantidad-carrito"
-                    class="text-xxs text-white">{{ count(Auth::user()->ordens->where('tipo', \App\Models\Orden::CARRITO)->first()->imagenesOrden) }}</span>
+                <span id="cantidad-carrito" class="text-xxs text-white">
+                    @if (isset(Auth::user()->ordens->where('tipo', \App\Models\Orden::CARRITO)->first()->imagenesOrden))
+                        {{ count(Auth::user()->ordens->where('tipo', \App\Models\Orden::CARRITO)->first()->imagenesOrden) }}
+                    @else
+                        0
+                    @endif
+                </span>
             </div>
             {{-- @if (count(Auth::user()->orden->images) > 0)
                 <div
@@ -40,50 +45,58 @@
                 @php
                     $ordenes = Auth::user()->ordens->where('tipo', \App\Models\Orden::CARRITO);
                 @endphp
-                @foreach ($ordenes->first()->imagenesOrden as $imagen)
-                    <li id="li{{$imagen->id}}{{Auth::user()->id}}" class="border-b border-slate-200 dark:border-slate-700 last:border-0">
-                        {{-- <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito"> --}}
-                        <div class="p-2 flex bg-white hover:bg-gray-100 border-b border-gray-100">
-                            <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito">
-                                <div class="w-16"><img src="{{ $imagen->url }}" class="w-full h-full object-cover"
-                                        alt="img product"></div>
-                            </a>
-                            <div class="flex-auto text-sm w-32 px-1">
-                                <div class="font-bold">{{ $imagen->image->titulo }}</div>
-                                {{-- <div class="truncate">
+                @if (isset($ordenes->first()->imagenesOrden))
+                    @foreach ($ordenes->first()->imagenesOrden as $imagen)
+                        <li id="li{{ $imagen->id }}{{ Auth::user()->id }}"
+                            class="border-b border-slate-200 dark:border-slate-700 last:border-0">
+                            {{-- <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito"> --}}
+                            <div class="p-2 flex bg-white hover:bg-gray-100 border-b border-gray-100">
+                                <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito">
+                                    <div class="w-16"><img src="{{ $imagen->url }}" class="w-full h-full object-cover"
+                                            alt="img product"></div>
+                                </a>
+                                <div class="flex-auto text-sm w-32 px-1">
+                                    <div class="font-bold">{{ $imagen->image->titulo }}</div>
+                                    {{-- <div class="truncate">
                                         {{ Auth::user()->ordens->where('tipo', \App\Models\Orden::CARRITO)->first()->imagenesOrden }}
                                     </div> --}}
-                                {{-- <div class="text-gray-400">Qt: 2</div> --}}
-                            </div>
-                            <div class="flex flex-col w-18 font-medium items-end">
-                                <div data-image="{{ $imagen->id }}" data-user="{{ Auth::user()->id }}"
-                                    class="btn-del w-5 h-5 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="feather feather-trash-2 ">
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path
-                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                        </path>
-                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
+                                    {{-- <div class="text-gray-400">Qt: 2</div> --}}
                                 </div>
-                                {{ $imagen->costo }} Bs
+                                <div class="flex flex-col w-18 font-medium items-end">
+                                    <div data-image="{{ $imagen->id }}" data-user="{{ Auth::user()->id }}"
+                                        class="btn-del w-5 h-5 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 ">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </div>
+                                    {{ $imagen->costo }} Bs
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                @endforeach
+                        </li>
+                    @endforeach
+                @endif
                 <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
                     <div class="p-4 justify-center flex">
-                        <a id="btn-total" href="{{route('cliente.carrito.index')}}"
+                        <a id="btn-total" href="{{ route('cliente.carrito.index') }}"
                             class="text-base  undefined  hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer 
             hover:bg-teal-700 hover:text-teal-100 
             bg-teal-100 
             text-teal-700 
             border duration-200 ease-in-out 
             border-teal-600 transition">Total
-                            {{ $ordenes->first()->total }}Bs</a>
+                            @if (isset($ordenes->first()->imagenesOrden))
+                                {{ $ordenes->first()->total }}
+                            @else
+                                0
+                            @endif
+                            Bs</a>
                     </div>
                 </li>
             </ul>

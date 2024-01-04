@@ -32,7 +32,7 @@ class CarritoController extends Controller
 
             DB::beginTransaction();
             $cliente = Auth::user();
-            $orden = Orden::where('tipo', Orden::CARRITO)->first();
+            $orden = $cliente->ordens->where('tipo', Orden::CARRITO)->first();
 
             $imagenes = $orden->imagenesOrden;
             $descuento = $request->costoTotal - 0.01;
@@ -108,6 +108,10 @@ class CarritoController extends Controller
                     $orden->fecha_entrega = $request->fecha_entrega;
                 }
                 $orden->save();
+                foreach ($orden->imagenesOrden as $imageO) {
+                    $imageO->image->cantidad_vendido = $imageO->image->cantidad_vendido + 1;
+                    $imageO->image->save();
+                }
                 Orden::create([
                     'tipo' => Orden::CARRITO,
                     'total' => 0,
@@ -144,7 +148,7 @@ class CarritoController extends Controller
                 $nombreImagen,
                 'public'
             );
-            $orden->qr_pago = $path;
+            $orden->qr_pago = Storage::disk('s3')->url($path);
             $orden->save();
             $response = [
                 'success' => true,

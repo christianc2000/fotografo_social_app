@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ImageSeeder::class);
         $this->call(OrdenSeeder::class);
         $this->call(ImageOrdenSeeder::class);
+        $this->call(PlanSeeder::class);
+        $this->call(SuscripcionSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

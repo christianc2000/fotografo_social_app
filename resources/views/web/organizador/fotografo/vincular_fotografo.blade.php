@@ -4,81 +4,37 @@
 
             <div class="card-body">
                 <!-- component -->
-                <section class="container px-4 mx-auto">
+                <section class="container px-4 mx-auto py-2">
                     <div class="sm:flex sm:items-center sm:justify-between">
                         <div>
                             <div class="flex items-center gap-x-3">
-                                <h2 class="text-lg font-medium text-gray-700 dark:text-white">Eventos</h2>
+                                <h2 class="text-lg font-medium text-gray-800 dark:text-white">Fotografos</h2>
 
-                                {{-- <span
-                                    class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">240
-                                    vendors</span> --}}
+
                             </div>
 
-                            {{-- <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">These companies have purchased in
-                                the last 12 months.</p> --}}
-                        </div>
-
-                        <div class="flex items-center mt-4 gap-x-3">
-                            {{-- <button
-                                class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_3098_154395)">
-                                        <path
-                                            d="M13.3333 13.3332L9.99997 9.9999M9.99997 9.9999L6.66663 13.3332M9.99997 9.9999V17.4999M16.9916 15.3249C17.8044 14.8818 18.4465 14.1806 18.8165 13.3321C19.1866 12.4835 19.2635 11.5359 19.0351 10.6388C18.8068 9.7417 18.2862 8.94616 17.5555 8.37778C16.8248 7.80939 15.9257 7.50052 15 7.4999H13.95C13.6977 6.52427 13.2276 5.61852 12.5749 4.85073C11.9222 4.08295 11.104 3.47311 10.1817 3.06708C9.25943 2.66104 8.25709 2.46937 7.25006 2.50647C6.24304 2.54358 5.25752 2.80849 4.36761 3.28129C3.47771 3.7541 2.70656 4.42249 2.11215 5.23622C1.51774 6.04996 1.11554 6.98785 0.935783 7.9794C0.756025 8.97095 0.803388 9.99035 1.07431 10.961C1.34523 11.9316 1.83267 12.8281 2.49997 13.5832"
-                                            stroke="currentColor" stroke-width="1.67" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_3098_154395">
-                                            <rect width="20" height="20" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-
-                                <span>Import</span>
-                            </button> --}}
-                            {{-- <a href="{{ route('organizador.evento.create') }}"
-                                class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span>Agregar Evento</span>
-                            </a> --}}
-
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Vincular Fotografo</p>
                         </div>
 
                     </div>
                     <div class="mt-6 md:flex md:items-center md:justify-between">
-                        <div
+                        {{-- <div
                             class="inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700">
                             <button id="btn-todo" class="px-5 py-2 btn btn-activo">
                                 Ver todo
                             </button>
 
-                            <button id="btn-vigente"
+                            <button id="btn-en-espera"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Vigentes
+                                En espera
                             </button>
 
-                            <button id="btn-en-curso"
+                            <button id="btn-aceptado"
                                 class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                En curso
+                                Aceptado
                             </button>
 
-                            <button id="btn-finalizado"
-                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Finalizados
-                            </button>
-
-                            <button id="btn-cancelado"
-                                class="px-5 py-2 btn text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">
-                                Cancelados
-                            </button>
-                        </div>
+                        </div> --}}
 
                         {{-- <div class="relative flex items-center mt-4 md:mt-0">
                             <span class="absolute">
@@ -95,18 +51,18 @@
                         </div> --}}
                     </div>
 
-                    <div class="flex flex-col mt-6 px-2">
+                    <div class="flex flex-col mt-6">
                         <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="border border-gray-200 dark:border-gray-700 md:rounded-lg">
                                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
-                                        id="tabla-evento">
+                                        id="tabla-fotografo">
                                         <thead class="bg-gray-50 dark:bg-gray-800">
                                             <tr class="encabezado">
                                                 <th scope="col"
                                                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                     <button class="flex items-center gap-x-3 focus:outline-none">
-                                                        <span>Evento</span>
+                                                        <span>Fotografo</span>
 
                                                         <svg class="h-3" viewBox="0 0 10 11" fill="none"
                                                             xmlns="http://www.w3.org/2000/svg">
@@ -128,15 +84,12 @@
 
                                                 <th scope="col"
                                                     class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Estado
+                                                    Vinculados
                                                 </th>
-                                                <th scope="col"
-                                                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Participación
-                                                </th>
+
                                                 <th scope="col"
                                                     class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                    Fecha del evento
+                                                    Fecha de vinculación
                                                 </th>
 
                                                 {{-- <th scope="col"
@@ -150,71 +103,29 @@
                                         </thead>
                                         <tbody
                                             class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                            @foreach ($eventos as $evento)
-                                                <tr data-tipo="{{ $evento->estado }}">
+                                            @foreach ($fotografosSinVincular as $fotografo)
+                                                <tr>
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
                                                             <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-fill"
-                                                                src="{{ $evento->img_evento }}" alt="">
+                                                                src="{{ $fotografo->url_photo }}" alt="">
                                                             <div class="min-w-0 flex-auto">
                                                                 <p
-                                                                    class="text-sm leading-6 font-medium text-gray-700 dark:text-white">
-                                                                    {{ $evento->titulo }}</p>
+                                                                    class="text-sm font-semibold leading-6 text-gray-700 dark:text-white">
+                                                                    {{ $fotografo->name }} {{ $fotografo->lastname }}
+                                                                </p>
                                                                 <p
                                                                     class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                                                    {{ $evento->direccion }}</p>
+                                                                    {{ $fotografo->email }}</p>
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if ($evento->estado == \App\Models\Evento::VIGENTE)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-blue-500 gap-x-2 bg-blue-100/60 dark:bg-gray-800">
-                                                                Vigente
-                                                            </div>
-                                                        @elseif($evento->estado == \App\Models\Evento::CURSO)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                En curso
-                                                            </div>
-                                                        @elseif($evento->estado == \App\Models\Evento::FINALIZADO)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-gray-500 gap-x-2 bg-gray-100/60 dark:bg-gray-800">
-                                                                Finalizado
-                                                            </div>
-                                                        @elseif($evento->estado == \App\Models\Evento::CANCELADO)
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-red-500 gap-x-2 bg-red-100/60 dark:bg-gray-800">
-                                                                Cancelado
-                                                            </div>
-                                                        @endif
-
-                                                    </td>
-                                                    <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                        @if (isset($evento->pivot['fecha_aceptacion']))
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                                                                Aceptada
-                                                            </div>
-                                                        @else
-                                                            <div
-                                                                class="inline px-3 py-1 text-sm font-normal rounded-full text-red-500 gap-x-2 bg-red-100/60 dark:bg-gray-800">
-                                                                No aceptada
-                                                            </div>
-                                                        @endif
-
                                                     </td>
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        <div>
-                                                            <h4 class="text-gray-700 dark:text-gray-200">
-                                                                {{ $evento->fecha_evento }}</h4>
-                                                            {{-- <p class="text-gray-500 dark:text-gray-400">Brings all your
-                                                                news into one place</p> --}}
-                                                        </div>
+                                                        Sin Vincular
                                                     </td>
-                                                    {{-- <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                        {{ $evento->sueldo }}
-                                                    </td> --}}
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                        -
+                                                    </td>
 
                                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
                                                         <div class="dropdown">
@@ -227,26 +138,51 @@
                                                                 </svg>
                                                             </button>
                                                             <div id="myDropdown" class="dropdown-content">
-                                                                {{-- @if ($evento->estado == \App\Models\Evento::VIGENTE || $evento->estado == \App\Models\Evento::CURSO)
-                                                                    <a href="{{ route('organizador.evento.edit', $evento->id) }}"
-                                                                        class="hover:bg-gray-200">Editar</a>
-                                                                    <a href="#estado"
-                                                                        class="hover:bg-gray-200">Estado</a>
-                                                                @elseif($evento->estado == \App\Models\Evento::FINALIZADO || $evento->estado == \App\Models\Evento::CANCELADO)
-                                                                    <a href="#editar" class="hover:bg-gray-200">Ver</a>
-                                                                @endif --}}
-                                                                <a href="{{route('fotografo.evento.show',$evento->id)}}" class="hover:bg-gray-200">Detalle
-                                                                    del evento</a>
-                                                                <a href="{{route('fotografo.evento.galeria',$evento->id)}}"
-                                                                    class="hover:bg-gray-200">Galeria</a>
+                                                                <form
+                                                                    action="{{ route('organizador.vincular.fotografo.store') }}"
+                                                                    method="post" class="w-full h-full">
+                                                                    @csrf
+                                                                    <input type="hidden" name="fotografo_id"
+                                                                        value="{{ $fotografo->id }}">
+                                                                    <button type="submit"
+                                                                        class="hover:bg-gray-200 w-full h-full">Vincular</button>
+                                                                </form>
 
-                                                                {{-- <a href="{{ route('personal.edit', $evento->id) }}"
-                                                                    class="hover:bg-gray-200">Editar</a>
-                                                                <a href="#" data-id={{ $evento->id }}
-                                                                    data-name="{{ $evento->name }} {{ $evento->lastname }}"
-                                                                    class="deleteBtn hover:bg-gray-200">Eliminar</a> --}}
+                                                                {{-- @if ($fotografo->pivot->estado == \App\Models\Evento::ESPERA)
+                                                                    <a href="#" class="hover:bg-gray-200">Reenviar
+                                                                        invitación</a>
+                                                                @endif --}}
                                                             </div>
                                                         </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            @foreach ($fotografosVinculados as $fotografo)
+                                                <tr>
+                                                    <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                        <div class="flex min-w-0 gap-x-4">
+                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-fill"
+                                                                src="{{ $fotografo->url_photo }}" alt="">
+                                                            <div class="min-w-0 flex-auto">
+                                                                <p
+                                                                    class="text-sm font-semibold leading-6 text-gray-700 dark:text-white">
+                                                                    {{ $fotografo->name }} {{ $fotografo->lastname }}
+                                                                </p>
+                                                                <p
+                                                                    class="mt-1 truncate text-xs leading-5 text-gray-500">
+                                                                    {{ $fotografo->email }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                        Vinculados
+                                                    </td>
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                        {{ $fotografo->pivot['created_at'] }}
+                                                    </td>
+
+                                                    <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                        
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -373,8 +309,13 @@
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             background-color: #f9f9f9;
         }
-
         .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content button {
             color: black;
             padding: 12px 16px;
             text-decoration: none;
@@ -463,39 +404,23 @@
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Muestra todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').show();
+            $('#tabla-fotografo tr:not(.encabezado)').show();
         });
-        $('#btn-vigente').click(function() {
+        $('#btn-en-espera').click(function() {
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
+            $('#tabla-fotografo tr:not(.encabezado)').hide();
             // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-evento tr[data-tipo="VIGENTE"]:not(.encabezado)').show();
+            $('#tabla-fotografo tr[data-tipo="EN ESPERA"]:not(.encabezado)').show();
         });
-        $('#btn-en-curso').click(function() {
+        $('#btn-aceptado').click(function() {
             $('.btn').removeClass('btn-activo');
             $(this).addClass('btn-activo');
             // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
+            $('#tabla-fotografo tr:not(.encabezado)').hide();
             // Muestra solo las filas que corresponden a médicos
-            $('#tabla-evento tr[data-tipo="EN CURSO"]:not(.encabezado)').show();
-        });
-        $('#btn-finalizado').click(function() {
-            $('.btn').removeClass('btn-activo');
-            $(this).addClass('btn-activo');
-            // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
-            // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-evento tr[data-tipo="FINALIZADO"]:not(.encabezado)').show();
-        });
-        $('#btn-cancelado').click(function() {
-            $('.btn').removeClass('btn-activo');
-            $(this).addClass('btn-activo');
-            // Oculta todas las filas que no son de encabezado
-            $('#tabla-evento tr:not(.encabezado)').hide();
-            // Muestra solo las filas que corresponden a enfermeras
-            $('#tabla-evento tr[data-tipo="CANCELADO"]:not(.encabezado)').show();
+            $('#tabla-fotografo tr[data-tipo="ACEPTADO"]:not(.encabezado)').show();
         });
     </script>
     <script>
