@@ -143,7 +143,9 @@ class MovilController extends BaseController
         $user=User::find($request->user_id);
         if($user->tipo=='C'){
          $notificaciones= $user->notifications;
-            return $this->sendResponse($notificaciones,"Mi notificaciones");
+         $notificaciones_leidas=$user->readNotifications;
+         $notificaciones_sin_leer=$user->unreadNotifications;
+            return $this->sendResponse(['read'=>$notificaciones_leidas,'unread'=>$notificaciones_sin_leer],"Mis notificaciones");
         }else{
             return $this->sendError('Unauthorized', ['password' => 'Usuario no corresponde']);
         }
