@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\Web\Cliente\CarritoController;
+use App\Http\Controllers\Web\Cliente\GaleriaController;
 use App\Http\Controllers\Web\Fotografo\EventoController as FotografoEventoController;
 use App\Http\Controllers\Web\Fotografo\InvitacionController;
 use App\Http\Controllers\Web\Organizador\EventoController;
@@ -32,9 +33,9 @@ Route::get('/configuracion', function () {
     return view('web.cliente.configuracion');
 })->name('configuracion');
 
- Route::get('/fotografo', function(){
+Route::get('/fotografo', function () {
     return "Vista fotografos";
- })->name('fotografo');
+})->name('fotografo');
 
 Route::get('/evento', function () {
     return "Vista eventos";
@@ -91,15 +92,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('fotografo')->group(function () {
         Route::resource('evento', FotografoEventoController::class)->names('fotografo.evento');
         Route::resource('invitacion', InvitacionController::class)->names('fotografo.invitacion');
-        Route::get('evento/{id}/galeria',[FotografoEventoController::class,'galeria'])->name('fotografo.evento.galeria');
-        Route::get('evento/{id}/galeria/agregar',[FotografoEventoController::class,'agregarImagenes'])->name('fotografo.evento.galeria.agregar');
-        Route::get('evento/galeria/imagen/{id}/editar',[FotografoEventoController::class,'editarImage'])->name('fotografo.evento.galeria.editar');
-        Route::put('evento/galeria/imagen/{id}/update',[FotografoEventoController::class,'updateImage'])->name('fotografo.evento.galeria.update');
+        Route::get('evento/{id}/galeria', [FotografoEventoController::class, 'galeria'])->name('fotografo.evento.galeria');
+        Route::get('evento/{id}/galeria/agregar', [FotografoEventoController::class, 'agregarImagenes'])->name('fotografo.evento.galeria.agregar');
+        Route::get('evento/galeria/imagen/{id}/editar', [FotografoEventoController::class, 'editarImage'])->name('fotografo.evento.galeria.editar');
+        Route::put('evento/galeria/imagen/{id}/update', [FotografoEventoController::class, 'updateImage'])->name('fotografo.evento.galeria.update');
     });
 
-    Route::prefix('cliente')->group(function(){
-         Route::resource('carrito',CarritoController::class)->names('cliente.carrito');
-         Route::get('/payments/generate_payment', [CarritoController::class, 'generatePayment']);
+    Route::prefix('cliente')->group(function () {
+        Route::resource('carrito', CarritoController::class)->names('cliente.carrito');
+        Route::get('/payments/generate_payment', [CarritoController::class, 'generatePayment']);
+        Route::get('galeria/{id}',[GaleriaController::class,'show'])->name('cliente.aparicion.show'); //id de la foto de la gaeria donde aparece
+        Route::get('galeria/',[GaleriaController::class,'index'])->name('cliente.galeria.index');
+        Route::get('galeria/{id}/ver',[GaleriaController::class,'ver'])->name('cliente.galeria.ver');
     });
 });
 

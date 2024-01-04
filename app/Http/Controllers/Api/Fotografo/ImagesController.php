@@ -51,6 +51,7 @@ class ImagesController extends BaseController
                 $image = Image::create([
                     'titulo' => $request->titulo,
                     'url' => $urlImagen,
+                    'url_baja' => $urlImagen,
                     'tipo' => Image::EVENTO,
                     'precio' => $request->precio,
                     'categoria' => $request->categoria,

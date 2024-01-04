@@ -60,8 +60,8 @@
                                     class="menu-link {{ Route::is('fotografo') ? 'active' : '' }} color-texto ">Fotografos</a>
                                 <a href="{{ route('evento') }}"
                                     class="menu-link {{ Route::is('evento') ? 'active' : '' }} color-texto ">Eventos</a>
-                                <a href="{{ route('galeria') }}"
-                                    class="menu-link {{ Route::is('galeria') ? 'active' : '' }} color-texto ">Galería</a>
+                                <a href="{{ route('cliente.galeria.index') }}"
+                                    class="menu-link {{ Route::is('cliente.galeria.index') ? 'active' : '' }} color-texto ">Galería</a>
                                 <a href="{{ route('pago') }}"
                                     class="menu-link {{ Route::is('pago') ? 'active' : '' }} color-texto ">Pagos</a>
 
