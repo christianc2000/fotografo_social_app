@@ -132,24 +132,11 @@
         function download(event) {
             var button = event.target; // The clicked button
             var url = button.getAttribute('data-url'); // The data-url attribute
-            fetch(url)
-                .then(response => response.blob())
-                .then(blob => {
-                    // Crea un nuevo FileReader
-                    var reader = new FileReader();
-                    reader.onloadend = function() {
-                        var base64data = reader.result;
-                        console.log(base64data); // Aquí tienes tu imagen en base64
-                    }
-                    var downloadLink = document.createElement('a');
-                    downloadLink.href = reader.readAsDataURL(blob);
-                    downloadLink.download = 'image-my-galery.png';
-                    // Simula el clic en el enlace para iniciar la descarga
-                    downloadLink.click();
-                    // Convierte el blob a base64
+            console.log("url: ", url);
+            // var url = button.getAttribute('data-url'); // El atributo data-url
 
-                });
-
+            // Abre la imagen en una nueva pestaña
+            window.open(url);
         }
     </script>
 @endsection
