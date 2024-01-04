@@ -9,6 +9,7 @@ use App\Models\ImageOrden;
 use App\Models\Orden;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ImageController extends BaseController

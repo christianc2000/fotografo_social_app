@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Orden extends Model
 {
@@ -21,9 +22,15 @@ class Orden extends Model
     const ONLINE = "Descarga online";
 
     protected $fillable = [
+        'nit',
         'direccion_envio',
         'correo_orden',
+        'razon',
+        'celular',
+        'gps',
+        'qr_pago',
         'fecha_orden',
+        'fecha_entrega',
         'estado_orden',
         'tipo_entrega',
         'tipo',
@@ -41,4 +48,6 @@ class Orden extends Model
     public function imagenesOrden(){
         return $this->hasMany(ImageOrden::class);
     }
+
+  
 }

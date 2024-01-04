@@ -41,7 +41,7 @@
                     $ordenes = Auth::user()->ordens->where('tipo', \App\Models\Orden::CARRITO);
                 @endphp
                 @foreach ($ordenes->first()->imagenesOrden as $imagen)
-                    <li class="border-b border-slate-200 dark:border-slate-700 last:border-0">
+                    <li id="li{{$imagen->id}}{{Auth::user()->id}}" class="border-b border-slate-200 dark:border-slate-700 last:border-0">
                         {{-- <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito"> --}}
                         <div class="p-2 flex bg-white hover:bg-gray-100 border-b border-gray-100">
                             <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito">
@@ -117,46 +117,43 @@
             cartModal.style.display = "none";
         }
     });
-    var btnsDel = document.querySelectorAll('.btn-del');
-    btnsDel.forEach(function(btnDel) {
-        btnDel.addEventListener('click', function(event) {
-            event.stopPropagation(); // Detiene la propagación del evento
-            var imageId = event.currentTarget.dataset.image; // Extrae el atributo data-image
-            var userId = event.currentTarget.dataset.user; // Extrae el atributo data-user
-            console.log('Image ID: ', imageId);
-            console.log('User ID: ', userId);
-            var liParent = event.target.closest('li');
-            // var apiUrl = 'https://tu-api.com/endpoint'; // Reemplaza esto con la URL de tu API
-            var apiUrl = new URL('/api/cliente/del-cart', window.location.origin);
-            console.log(apiUrl)
-            var data = {
-                image_orden_id: imageId,
-                user_id: userId
-            };
-
-            // // Envía la petición POST a la API
-            fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data.data);
-                    // Aquí puedes agregar el código que quieras ejecutar si la petición fue exitosa
-                    document.getElementById('cantidad-carrito').textContent = data
-                        .data.imagenes_orden
-                        .length; // Reemplaza 'data.nuevaCantidad' con la propiedad correspondiente de la respuesta
-                    document.getElementById('btn-total').textContent = "Total " + data.data.total +
-                        "Bs";
-                    liParent.remove();
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    // Aquí puedes agregar el código que quieras ejecutar si ocurrió un error
-                });
-        });
-    });
+    // var btnsDel = document.querySelectorAll('.btn-del');
+    // btnsDel.forEach(function(btnDel) {
+    //     btnDel.addEventListener('click', function(event) {
+    //         event.stopPropagation();
+    //         var imageId = event.currentTarget.dataset.image;
+    //         var userId = event.currentTarget.dataset.user;
+    //         console.log('Image ID: ', imageId);
+    //         console.log('User ID: ', userId);
+    //         var liParent = event.target.closest('li');
+    //         var apiUrl = new URL('/api/cliente/del-cart', window.location.origin);
+    //         console.log(apiUrl)
+    //         var data = {
+    //             image_orden_id: imageId,
+    //             user_id: userId
+    //         };
+    //         fetch(apiUrl, {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify(data),
+    //             })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 console.log('Success:', data.data);
+    //                 // Aquí puedes agregar el código que quieras ejecutar si la petición fue exitosa
+    //                 document.getElementById('cantidad-carrito').textContent = data
+    //                     .data.imagenes_orden
+    //                     .length; // Reemplaza 'data.nuevaCantidad' con la propiedad correspondiente de la respuesta
+    //                 document.getElementById('btn-total').textContent = "Total " + data.data.total +
+    //                     "Bs";
+    //                 liParent.remove();
+    //             })
+    //             .catch((error) => {
+    //                 console.error('Error:', error);
+    //                 // Aquí puedes agregar el código que quieras ejecutar si ocurrió un error
+    //             });
+    //     });
+    // });
 </script>

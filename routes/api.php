@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Cliente\ImageController;
+use App\Http\Controllers\Api\Cliente\PaymenController;
 use App\Http\Controllers\Api\Fotografo\ImagesController;
 use App\Http\Controllers\Api\Fotografo\InvitacionController;
-use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +32,5 @@ Route::prefix('cliente')->group(function () {
     Route::post('add-cart', [ImageController::class, 'addCarrito'])->name('cliente.add.carrito');
     Route::post('del-cart', [ImageController::class, 'delCarrito'])->name('cliente.del.carrito');
 });
-Route::post('/urlcallback', [PaymentController::class, 'urlCallback']);
+Route::post('/urlcallback', [PaymenController::class, 'urlCallback']);
 

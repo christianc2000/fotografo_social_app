@@ -19,9 +19,11 @@
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/carousel.css') }}">
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/animacion.css') }}">
+
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="{{ asset('../estilos_tecno/js/nav.js') }}"></script>
     <script src="{{ asset('../estilos_tecno/js/carousel.js') }}"></script>
+    {{-- <script src="{{ asset('estilos_tecno/js/carrito.js') }}"></script> --}}
     {{-- bootstrap 5 --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 </head>
@@ -316,6 +318,12 @@
     @endif
 
     <main class="body-background">
+        <div class="position-absolute top-0 end-80 p-0 " hidden>
+            <div class="form-check form-switch custom-switch d-flex justify-content-end p-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                <label class="form-check-label ms-3" for="flexSwitchCheckChecked"> Modo Oscuro </label>
+            </div>
+        </div>
         <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             @yield('contenido')
         </div>
@@ -346,9 +354,338 @@
             menu.classList.toggle('hidden');
         });
     </script>
+    <script>
+        var btnsAddCarts = document.querySelectorAll('.btn-add-cart');
+        btnsAddCarts.forEach(function(btnsAddCart) {
+            btnsAddCart.addEventListener('click', function(event) {
+                console.log("click en el btn add cart");
+                var imageId = event.currentTarget.dataset.image;
+                var userId = event.currentTarget.dataset.user;
+                console.log('Image ID: ', imageId);
+                console.log('User ID: ', userId);
+                var apiUrl = new URL('/api/cliente/add-cart', window.location.origin);
+                console.log(apiUrl)
+                var data = {
+                    image_id: imageId,
+                    user_id: userId
+                };
+                fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('cantidad-carrito').textContent = data
+                            .data.orden.imagenes_orden
+                            .length; // Reemplaza 'data.nuevaCantidad' con la propiedad correspondiente de la respuesta
+                        document.getElementById('btn-total').textContent = "Total " + data.data.orden
+                            .total +
+                            "Bs";
+                        var listCart = document.getElementById('list-cart');
+                        var newLi = `
+                    <li id="li${data.data.orden.imagenes_orden[data
+                            .data.orden.imagenes_orden
+                            .length-1].id}${userId}" class="border-b border-slate-200 dark:border-slate-700 last:border-0">
+                        <div class="p-2 flex bg-white hover:bg-gray-100 border-b border-gray-100">
+                            <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito">
+                                <div class="w-16"><img src="${data.data.imagen.url_baja}" class="w-full h-full object-cover" alt="img product"></div>
+                            </a>
+                            <div class="flex-auto text-sm w-32 px-1">
+                                <div class="font-bold">${data.data.imagen.titulo}</div>
+                            </div>
+                            <div class="flex flex-col w-18 font-medium items-end">
+                                <div data-image="${data.data.orden.imagenes_orden[data.data.orden.imagenes_orden.length-1].id}" data-user="${data.data.orden.user_id}" class="btn-del w-5 h-5 mb-6 hover:bg-red-200 rounded-full cursor-pointer text-red-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-trash-2 ">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>                               
+                                </div>
+                                ${data.data.imagen.precio} Bs
+                            </div>
+                        </div>
+                    </li>
+                `;
+                        listCart.insertAdjacentHTML('afterbegin', newLi);
+                        actualizarBtnsDel();
+
+                        // Crea un nuevo objeto de evento
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+
+        function ejecutarCodigoBtnsDel(event) {
+            event.stopPropagation();
+            var imageId = event.currentTarget.dataset.image;
+            var userId = event.currentTarget.dataset.user;
+            console.log('Image ID: ', imageId);
+            console.log('User ID: ', userId);
+            var liParent = document.getElementById('li' + imageId + userId);
+            var divParent = document.getElementById('div' + imageId + userId);
+            var subtotal = document.getElementById('subtotalcart');
+            var total = document.getElementById('totalcart');
+            var costoTotal = document.getElementById('costoTotal');
+            console.log("subtotal: ", subtotal);
+            console.log("total: ", total);
+            console.log("costo Total: ", costoTotal);
+            var apiUrl = new URL('/api/cliente/del-cart', window.location.origin);
+            console.log(apiUrl)
+            var data = {
+                image_orden_id: imageId,
+                user_id: userId
+            };
+            fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data.data);
+                    // Aquí puedes agregar el código que quieras ejecutar si la petición fue exitosa
+                    document.getElementById('cantidad-carrito').textContent = data
+                        .data.imagenes_orden
+                        .length; // Reemplaza 'data.nuevaCantidad' con la propiedad correspondiente de la respuesta
+                    document.getElementById('btn-total').textContent = "Total " + data.data.total +
+                        "Bs";
+                    liParent.remove();
+
+                    if (divParent != null) {
+                        divParent.remove();
+                    }
+                    if (subtotal != null) {
+                        subtotal.textContent = data
+                            .data.total +
+                            " Bs";
+                    }
+                    console.log(subtotal);
+
+                    if (total != null) {
+                        total.textContent = (data.data
+                                .total + 2) +
+                            " Bs";
+                    }
+                    console.log(total);
+
+                    if (costoTotal != null) {
+                        costoTotal.value = data.data.total + 2;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // Aquí puedes agregar el código que quieras ejecutar si ocurrió un error
+                });
+        }
+
+        function actualizarBtnsDel() {
+            console.log("entra a actualizar btnsdel");
+            var btnsDel = document.querySelectorAll('.btn-del');
+            btnsDel.forEach(function(btnDel) {
+                // Elimina los oyentes de eventos existentes para evitar duplicados
+                btnDel.removeEventListener('click', ejecutarCodigoBtnsDel);
+                // Adjunta el evento de clic
+                btnDel.addEventListener('click', ejecutarCodigoBtnsDel);
+            });
+        }
+        actualizarBtnsDel();
+        var btnsDelet = document.querySelectorAll('.btn-delete');
+        btnsDelet.forEach(function(btnDele) {
+            btnDele.addEventListener('click', function(event) {
+                console.log("click boton vista cart");
+                var imageId = event.currentTarget.dataset.image;
+                var userId = event.currentTarget.dataset.user;
+                console.log('Image ID: ', imageId);
+                console.log('User ID: ', userId);
+                var divParent = document.getElementById('div' + imageId + userId);
+
+                divParent.remove(); // Mueve la eliminación de divParent aquí
+
+                actualizarBtnsDel();
+
+                // Crea un nuevo objeto de evento
+                var newEvent = {
+                    currentTarget: event.currentTarget,
+                    target: event.target,
+                    stopPropagation: function() {}
+                };
+                ejecutarCodigoBtnsDel(newEvent)
+                // Actualiza btnsDel después de hacer clic en btnsDelet
+
+            });
+        });
+    </script>
     {{-- animación --}}
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        // Aplicar el tema almacenado al cargar la página
+        var switchCheckbox = document.getElementById('flexSwitchCheckChecked');
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getAttributeLocally('theme');
+            if (savedTheme === 'dark') {
+                changeThemeDark();
+            } else {
+                changeThemeLight();
+            }
 
+            switchCheckbox.addEventListener('change', function() {
+                // Lógica que se ejecutará cuando se cambie el valor del switch
+                if (switchCheckbox.checked) { //  modo dark
+                    changeThemeDark();
+                } else { // modo light
+                    changeThemeLight();
+                }
+            });
+        });
+
+        function getTheme() {
+            const body = document.body;
+            const temaActual = body.getAttribute('data-bs-theme');
+            return temaActual;
+        }
+
+        function changeThemeDark() {
+            const body = document.body;
+            body.setAttribute('data-bs-theme', 'dark');
+            saveAttributeLocally('theme', 'dark');
+        }
+
+        function changeThemeLight() {
+            const body = document.body;
+            body.setAttribute('data-bs-theme', 'light');
+            saveAttributeLocally('theme', 'light');
+        }
+        // Guardar un atributo localmente
+        function saveAttributeLocally(nombreAtributo, valor) {
+            localStorage.setItem(nombreAtributo, valor);
+        }
+        // Obtener un atributo guardado localmente
+        function getAttributeLocally(nombreAtributo) {
+            return localStorage.getItem(nombreAtributo);
+        }
+
+        function validateNumber(input) {
+            // Elimina caracteres no numéricos (excepto el punto para decimales)
+            input.value = input.value.replace(/[^0-9.]/g, '');
+            // Si se ingresan múltiples puntos, elimina todos menos el primero
+            var puntos = input.value.split('.');
+            if (puntos.length > 2) {
+                input.value = puntos[0] + '.' + puntos.slice(1).join('');
+            }
+            // Limitar a dos decimales
+            var decimales = input.value.split('.')[1];
+            if (decimales && decimales.length > 2) {
+                input.value = input.value.slice(0, -1);
+            }
+            // Si el campo está vacío, establecer el valor a 0
+            if (input.value === '') {
+                input.value = '0';
+            }
+        }
+
+        function validateNumberWithGuion(input) {
+            // Elimina caracteres no numéricos (excepto el punto para decimales)
+            input.value = input.value.replace(/[^0-9-]/g, '');
+            // Si se ingresan múltiples puntos, elimina todos menos el primero
+            var puntos = input.value.split('-');
+            if (puntos.length > 2) {
+                input.value = puntos[0] + '-' + puntos.slice(1).join('');
+            }
+            // Limitar a dos decimales
+            // var decimales = input.value.split('-')[1];
+            // if (decimales && decimales.length > 2) {
+            //     input.value = input.value.slice(0, -1);
+            // }
+            // // Si el campo está vacío, establecer el valor a 0
+            // if (input.value === '') {
+            //     input.value = '0';
+            // }
+        }
+
+        function validateOnlyNumber(input) {
+            // Elimina caracteres no numéricos (excepto el punto para decimales)
+            var inputValue = input.value.replace(/[^0-9-]/g, '');
+            // Limitar a un máximo de 8 caracteres
+            if (inputValue.length > 8) {
+                inputValue = inputValue.slice(0, 8);
+            }
+            input.value = inputValue;
+        }
+
+        function testQuery() {
+            console.log('test query working');
+        }
+
+        function mostrarSwal(title, description, icon, isDark, onAccept, onCancel, data = null) {
+            Swal.fire({
+                title: '¡' + title + '!',
+                text: description,
+                icon: icon,
+                showCancelButton: true, // Mostrar el botón de cancelar
+                confirmButtonText: 'Aceptar',
+                cancelButtonText: 'Cancelar',
+                // Agregar la clase 'dark' para el modo oscuro o 'light' para el modo light
+                // customClass: {
+                //     popup: isDark == true ? 'sweetalert-dark' : '',
+                //     header: isDark == true ? 'sweetalert-dark' : '',
+                //     content: isDark == true ? 'sweetalert-dark' : '',
+                //     confirmButton: isDark == true ? 'sweetalert-dark' : '',
+                //     cancelButton: isDark == true ? 'sweetalert-dark' : '',
+                // },
+            }).then((result) => {
+                // El código que se ejecutará después de hacer clic en Aceptar o Cancelar
+                if (result.isConfirmed) {
+                    if (onAccept && typeof onAccept === 'function') {
+                        console.log("hace click en aceptar");
+                        onAccept(data);
+                    }
+                } else if (result.isDismissed) {
+                    // Acción cuando se hace clic en Cancelar
+                    if (onCancel && typeof onCancel === 'function') {
+                        onCancel();
+                    }
+                }
+            });
+        }
+
+        function showSwalUnique(title, description, icon, isDark) {
+            Swal.fire({
+                title: title,
+                text: description,
+                icon: icon,
+                confirmButtonText: 'Entendido',
+                customClass: {
+                    popup: isDark == true ? 'sweetalert-dark' : '',
+                    header: isDark == true ? 'sweetalert-dark' : '',
+                    content: isDark == true ? 'sweetalert-dark' : '',
+                    confirmButton: isDark == true ? 'sweetalert-dark' : '',
+                    cancelButton: isDark == true ? 'sweetalert-dark' : '',
+                },
+            });
+        }
+    </script>
+    <style>
+        /* Agrega estilos según tus necesidades para un tema oscuro */
+        .sweetalert-dark {
+            background-color: #333;
+            color: #fff;
+            /* Otros estilos... */
+        }
+    </style>
 </body>
 
 </html>

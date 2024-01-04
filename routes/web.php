@@ -1,7 +1,7 @@
 <?php
 
 use App\Actions\Fortify\CreateNewUser;
-
+use App\Http\Controllers\Api\Cliente\PaymenController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
@@ -99,13 +99,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::prefix('cliente')->group(function(){
          Route::resource('carrito',CarritoController::class)->names('cliente.carrito');
+         Route::get('/payments/generate_payment', [CarritoController::class, 'generatePayment']);
     });
 });
 
 //Vistas principales sin auth
 
 
-
+//********************** reporte *********************************/
+Route::get('/report/order/pdf', [PaymenController::class, 'generatePdfOrder']);
 
 Route::get('login', function () {
     return view('auth.login');

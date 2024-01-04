@@ -14,11 +14,17 @@ return new class extends Migration
     {
         Schema::create('ordens', function (Blueprint $table) {
             $table->id();
-            $table->string('direccion_envio')->nullable();//se llena cuando ya se realiza el pago
+            $table->string('nit')->nullable();
+            $table->string('direccion_envio')->nullable();//se llena cuando ya se realiza el pago y es a domicilio
             $table->string('correo_orden')->nullable();//se llena cuando ya se realiza el pago
-            $table->timestamp('fecha_orden')->nullable();//se llena cuando ya se realiza el pago
+            $table->string('celular')->nullable();//se llena cuando ya se realiza el pago
+            $table->string('razon')->nullable();//se llena cuando ya se realiza el pago
+            $table->string('gps')->nullable();//se llena cuando ya se realiza el pago y es a domicilio
+           $table->string('qr_pago')->nullable();
+            $table->timestamp('fecha_orden')->nullable();//se llena cuando ya se realiza el pago 
+            $table->timestamp('fecha_entrega')->nullable();//se llena cuando ya se realiza el pago y es a domicilio
             $table->string('estado_orden')->nullable();//se llena cuando ya se realiza el pago
-            $table->string('tipo_entrega')->nullable();
+            $table->string('tipo_entrega')->nullable();//si es a domicilio o online
             $table->string('tipo')->default(Orden::CARRITO);
             $table->decimal('total',8,2)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
