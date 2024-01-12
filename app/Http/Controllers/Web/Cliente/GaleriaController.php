@@ -20,9 +20,20 @@ class GaleriaController extends Controller
     {
         $user = Auth::user();
         if ($user->tipo == 'C') {
-            $ordens = $user->ordens()->with('ImagenesOrden')->get(); //->orderByDesc('updated_at')->get();;
-
-            return view('web.cliente.galeria.galeria-index', compact('ordens'));
+            $ordens = $user->ordens()->with('imagenesOrden')->get();
+            //         $imagenes = User::where('id', $user->id) // Reemplaza $user_id con el ID del usuario
+            //         ->with('ordens.imagenesOrden')
+            //         ->get()
+            //         ->pluck('ordens.*.imagenesOrden')
+            //         ->collapse(); //->orderByDesc('updated_at')->get();
+            $user_id = $user->id;
+            $image_ordens = ImageOrden::whereHas('orden', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })->orderBy('updated_at','desc')->limit(100)->get();
+           
+            //    return $imagenes;
+            //    return $ordens;
+            return view('web.cliente.galeria.galeria-index', compact('ordens','image_ordens'));
         }
         return view('pages.utility.404');
     }
@@ -64,21 +75,22 @@ class GaleriaController extends Controller
         }
         return view('pages.utility.404');
     }
-public function ver($id){
-    $user = Auth::user();
+    public function ver($id)
+    {
+        $user = Auth::user();
 
-    if ($user->tipo == "C") {
-       
-        $image = ImageOrden::find($id);
+        if ($user->tipo == "C") {
 
-        if (isset($image)) {
-            $evento = Evento::find($image->evento_id);
+            $image = ImageOrden::find($id);
 
-            return view('web.cliente.galeria.galeria-ver', compact('image', 'evento'));
+            if (isset($image)) {
+                $evento = Evento::find($image->evento_id);
+
+                return view('web.cliente.galeria.galeria-ver', compact('image', 'evento'));
+            }
         }
+        return view('pages.utility.404');
     }
-    return view('pages.utility.404');
-}
     /**
      * Show the form for editing the specified resource.
      */
