@@ -104,7 +104,7 @@
                                                             Sin pagar
                                                         </div>
                                                     @endif
-                                                    <h2 class="flex-auto text-lg font-medium">{{ $orden->tipo_entrega }}
+                                                    <h2 class="flex-auto text-lg font-medium">{{$orden->nro_orden}}/{{ $orden->tipo_entrega }}
                                                     </h2>
                                                 </div>
                                                 <p class="mt-3"></p>
@@ -184,7 +184,7 @@
                                                         </a>
                                                     </div>
                                                     <button type="button" data-qr={{ $orden->qr_pago }}
-                                                        data-idqr={{ $orden->id }}
+                                                        data-idqr={{ $orden->nro_orden  }}
                                                         class="btnqr mb-2 md:mb-0 bg-gray-900 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-gray-800"
                                                         aria-label="like">QR</button>
                                                 </div>
@@ -223,7 +223,7 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    <h2 class="flex-auto text-lg font-medium">{{ $orden->tipo_entrega }}
+                                                    <h2 class="flex-auto text-lg font-medium">{{$orden->nro_orden}}/{{ $orden->tipo_entrega }}
                                                     </h2>
                                                 </div>
                                                 <p class="mt-3"></p>
@@ -303,7 +303,7 @@
                                                         </a>
                                                     </div>
                                                     <button type="button" data-qr={{ $orden->qr_pago }}
-                                                        data-idqr={{ $orden->id }}
+                                                        data-idqr={{ $orden->nro_orden  }}
                                                         class="btnqr mb-2 md:mb-0 bg-gray-900 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-gray-800"
                                                         aria-label="like">QR</button>
 
@@ -343,7 +343,7 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    <h2 class="flex-auto text-lg font-medium">{{ $orden->tipo_entrega }}
+                                                    <h2 class="flex-auto text-lg font-medium">{{$orden->nro_orden}}/{{ $orden->tipo_entrega }}
                                                     </h2>
                                                 </div>
                                                 <p class="mt-3"></p>
@@ -424,7 +424,7 @@
                                                     </div>
 
                                                     <button type="button" data-qr={{ $orden->qr_pago }}
-                                                        data-idqr={{ $orden->id }}
+                                                        data-idqr={{ $orden->nro_orden }}
                                                         class="btnqr mb-2 md:mb-0 bg-gray-900 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-gray-800"
                                                         aria-label="like">Realizar pago</button>
 
@@ -539,7 +539,7 @@
 
                 var qrCodeImage = document.getElementById('qrCodeImage');
                 qrCodeImage.src = qr;
-                $("#qrNro").text("QR-" + id);
+                $("#qrNro").text(id);
                 //alert("Has hecho clic en el botón QR."+qr);
             });
             $('#btn-todo').click(function() {

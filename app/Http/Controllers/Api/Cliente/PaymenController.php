@@ -53,6 +53,11 @@ class PaymenController extends Controller
         $orden->fecha_orden = Carbon::now()->toDateTimeString();
         $orden->save();
 
+        $imagenes = $orden->imagenesOrden;
+        foreach ($imagenes as $imagen) {
+            $imagen->url = $imagen->image->url;
+            $imagen->save();
+        }
         try {
             $arreglo = ['error' => 0, 'status' => 1, 'message' => "Pago realizado correctamente.", 'values' => true];
         } catch (\Throwable $th) {
