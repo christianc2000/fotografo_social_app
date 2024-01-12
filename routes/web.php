@@ -121,6 +121,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('galeria/', [GaleriaController::class, 'index'])->name('cliente.galeria.index');
         Route::get('galeria/{id}/ver', [GaleriaController::class, 'ver'])->name('cliente.galeria.ver');
         Route::resource('pago', PagoController::class)->names('cliente.pago');
+        Route::get('pago/{id}/imagenes', [PagoController::class,'imagesOrden'])->name('cliente.pago.orden.imagenes');
         Route::resource('evento', ClienteEventoController::class)->names('cliente.evento');
         Route::resource('invitacion', ClienteInvitacionController::class)->names('cliente.invitacion'); //id de la notificación de invitación a participar del evento
         Route::get('accept-invitation/{id}', [ClienteController::class, 'acceptInvitation']);

@@ -171,7 +171,7 @@
                                                 <div class="flex p-4 pb-2 border-t border-gray-200 "></div>
                                                 <div class="flex space-x-3 text-sm font-medium">
                                                     <div class="flex-auto flex space-x-3">
-                                                        <a href="#"
+                                                        <a href="{{route('cliente.pago.orden.imagenes',$orden->id)}}"
                                                             class="mb-2 md:mb-0 bg-white px-4 py-2 shadow-sm tracking-wider border text-gray-600 rounded-full hover:bg-gray-100 inline-flex items-center space-x-2 ">
                                                             <span
                                                                 class="text-green-400 hover:text-green-500 rounded-lg h-6 w-6">
@@ -183,10 +183,9 @@
                                                                 Imágenes</span>
                                                         </a>
                                                     </div>
-                                                    <button type="button" data-qr={{ $orden->qr_pago }}
-                                                        data-idqr={{ $orden->nro_orden  }}
+                                                    <a href="{{route('cliente.pago.show',$orden->id)}}"
                                                         class="btnqr mb-2 md:mb-0 bg-gray-900 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-gray-800"
-                                                        aria-label="like">QR</button>
+                                                        aria-label="like">Orden de pago</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -290,7 +289,7 @@
                                                 <div class="flex p-4 pb-2 border-t border-gray-200 "></div>
                                                 <div class="flex space-x-3 text-sm font-medium">
                                                     <div class="flex-auto flex space-x-3">
-                                                        <a href="#"
+                                                        <a href="{{route('cliente.pago.orden.imagenes',$orden->id)}}"
                                                             class="mb-2 md:mb-0 bg-white px-4 py-2 shadow-sm tracking-wider border text-gray-600 rounded-full hover:bg-gray-100 inline-flex items-center space-x-2 ">
                                                             <span
                                                                 class="text-green-400 hover:text-green-500 rounded-lg h-6 w-6">
@@ -302,10 +301,9 @@
                                                                 Imágenes</span>
                                                         </a>
                                                     </div>
-                                                    <button type="button" data-qr={{ $orden->qr_pago }}
-                                                        data-idqr={{ $orden->nro_orden  }}
+                                                    <a href="{{route('cliente.pago.show',$orden->id)}}"
                                                         class="btnqr mb-2 md:mb-0 bg-gray-900 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-gray-800"
-                                                        aria-label="like">QR</button>
+                                                        aria-label="like">Orden de pago</a>
 
                                                 </div>
                                             </div>
@@ -410,7 +408,7 @@
                                                 <div class="flex p-4 pb-2 border-t border-gray-200 "></div>
                                                 <div class="flex space-x-3 text-sm font-medium">
                                                     <div class="flex-auto flex space-x-3">
-                                                        <a href="#"
+                                                        <a href="{{route('cliente.pago.orden.imagenes',$orden->id)}}"
                                                             class="mb-2 md:mb-0 bg-white px-4 py-2 shadow-sm tracking-wider border text-gray-600 rounded-full hover:bg-gray-100 inline-flex items-center space-x-2 ">
                                                             <span
                                                                 class="text-green-400 hover:text-green-500 rounded-lg h-6 w-6">
@@ -423,10 +421,9 @@
                                                         </a>
                                                     </div>
 
-                                                    <button type="button" data-qr={{ $orden->qr_pago }}
-                                                        data-idqr={{ $orden->nro_orden }}
+                                                    <a href="{{route('cliente.pago.show',$orden->id)}}"
                                                         class="btnqr mb-2 md:mb-0 bg-gray-900 px-5 py-2 shadow-sm tracking-wider text-white rounded-full hover:bg-gray-800"
-                                                        aria-label="like">Realizar pago</button>
+                                                        aria-label="like">Orden de pago</a>
 
                                                 </div>
                                             </div>
@@ -440,7 +437,7 @@
             </section>
         </div>
     </div>
-    <div id="qrCodePago"
+    {{-- <div id="qrCodePago"
         class="main-modal fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
         style="background: rgba(0,0,0,.7);">
         <div
@@ -462,20 +459,20 @@
                     <p id="qrNro" class="text-lg font-bold"></p>
                 </div> --}}
                 <!--Body-->
-                <div class="flex justify-center items-center">
+                {{-- <div class="flex justify-center items-center">
                     <img id="qrCodeImage" alt="Código QR" class="w-128 h-128 object-contain">
-                </div>
+                </div> --}}
 
                 <!--Footer-->
-                <div class="flex justify-end pt-2">
+                {{-- <div class="flex justify-end pt-2">
                     <button
                         class="focus:outline-none modal-close px-4 bg-gray-400 p-3 rounded-lg text-black hover:bg-gray-300">Cancel</button>
                     {{-- <button
                     class="focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white hover:bg-teal-400">Confirm</button> --}}
-                </div>
+                {{-- </div>
             </div>
         </div>
-    </div>
+    </div>   --}}
     {{-- css --}}
     <style>
         .btn-activo {
@@ -530,18 +527,18 @@
     {{-- js --}}
     <script>
         $(document).ready(function() {
-            $(".btnqr").click(function() {
-                // Aquí puedes hacer algo cuando se haga clic en el botón
-                var qr = $(this).data('qr');
-                var id = $(this).data('idqr');
-                console.log("qr: ", qr);
-                openModal();
+            // $(".btnqr").click(function() {
+            //     // Aquí puedes hacer algo cuando se haga clic en el botón
+            //     var qr = $(this).data('qr');
+            //     var id = $(this).data('idqr');
+            //     console.log("qr: ", qr);
+            //     openModal();
 
-                var qrCodeImage = document.getElementById('qrCodeImage');
-                qrCodeImage.src = qr;
-                $("#qrNro").text(id);
-                //alert("Has hecho clic en el botón QR."+qr);
-            });
+            //     var qrCodeImage = document.getElementById('qrCodeImage');
+            //     qrCodeImage.src = qr;
+            //     $("#qrNro").text(id);
+            //     //alert("Has hecho clic en el botón QR."+qr);
+            // });
             $('#btn-todo').click(function() {
                 console.log("boton todo");
                 $('.btn').removeClass('btn-activo');
