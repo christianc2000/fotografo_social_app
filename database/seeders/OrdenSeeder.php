@@ -17,6 +17,7 @@ class OrdenSeeder extends Seeder
         $ordens = [
             [
                 'qr_pago'=>'https://rekognitions3-bucket.s3.amazonaws.com/fotografia_app/qr/1704328052__qr_orden.png',
+                'nro_orden'=>'ORDEN-129021',
                 'nit' => "891838412",
                 'razon' => "Sabrina Guzman Lopez",
                 "celular" => "73893232",
@@ -33,6 +34,8 @@ class OrdenSeeder extends Seeder
             ],
             [
                 'qr_pago'=>'https://rekognitions3-bucket.s3.amazonaws.com/fotografia_app/qr/1704328052__qr_orden.png',
+                'nro_orden'=>'ORDEN-298329',
+                'nit' => "891838412",
                 'correo_orden' => 'sabrina@gmail.com',
                 'fecha_orden' => '2024-01-04 12:00:00',
                 'fecha_entrega' => '2024-01-04 12:00:00',

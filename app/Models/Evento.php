@@ -15,6 +15,7 @@ class Evento extends Model
     //estado de una vinculación CON UN USER CLIENTE O FOTOGRAFO
     const ESPERA = "EN ESPERA";
     const ACEPTADO = "ACEPTADO";
+    const RECHAZADO = "RECHAZADO";
     protected $fillable = [
         'titulo',
         'descripcion',
@@ -43,26 +44,28 @@ class Evento extends Model
     {
         return $this->belongsToMany(User::class, 'evento_user')
             ->where('tipo', 'F')
-            ->withPivot('estado','fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'asistencia')->withTimestamps();
+            ->withPivot('estado', 'fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'asistencia')->withTimestamps();
     }
     public function clientesVinculadosEvento()
     {
         return $this->belongsToMany(User::class, 'evento_user')
             ->where('tipo', 'C')
-            ->withPivot('estado','fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'asistencia')->withTimestamps();
+            ->withPivot('estado', 'fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'asistencia')->withTimestamps();
     }
     public function clientesVinculadosEventoVinculados()
     {
         return $this->belongsToMany(User::class, 'evento_user')
             ->where('tipo', 'C')
             ->wherePivot('estado', 'ACEPTADO')
-            ->withPivot('estado','fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'asistencia')->withTimestamps();
+            ->withPivot('estado', 'fecha_envio', 'fecha_aceptacion', 'qr', 'fecha_asistencia', 'asistencia')->withTimestamps();
     }
-    public function images(){
+    public function images()
+    {
         return $this->hasMany(Image::class);
     }
 
-    public function invitacion(){
+    public function invitacion()
+    {
         return $this->hasMany(Invitacion::class);
     }
 }

@@ -94,7 +94,7 @@
                                         <span class="absolute -inset-1.5"></span>
                                         <span class="sr-only">Open user menu</span>
                                         @auth
-                                            <img class="h-8 w-8 rounded-full " src="{{ Auth::user()->url_photo }}"
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->url_photo }}"
                                                 alt="">
 
                                         @endauth
@@ -121,14 +121,16 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                                        <a href="{{route('cliente.perfil')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                             tabindex="-1" id="user-menu-item-0">Perfil</a>
                                         @if (Auth::user()->tipo != 'C')
                                             <a href="{{ route('dashboard') }}"
                                                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                                                 id="user-menu-item-0">Dashboard</a>
                                         @endif
-
+                                        <a href="{{ route('cliente.notificacion.index') }}"
+                                            class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                            id="user-menu-item-1">Notificaciones</a>
                                         <a href="{{ route('configuracion') }}"
                                             class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                                             id="user-menu-item-1">Configuración</a>
@@ -145,13 +147,12 @@
 
                                     <!-- Menú si no está autenticado -->
                                     @guest
-                                        <a href="{{ route('plan.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700"
-                                        role="menuitem" tabindex="-1" id="user-menu-item-0">Registrar
+                                        <a href="{{ route('plan.index') }}" class="block px-4 py-2 text-sm text-gray-700"
+                                            role="menuitem" tabindex="-1" id="user-menu-item-0">Registrar
                                             como Organizador</a>
                                         <a href="{{ route('plan.fotografo') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700"
-                                        role="menuitem" tabindex="-1" id="user-menu-item-0">Registrar
+                                            class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                            id="user-menu-item-0">Registrar
                                             como Fotografo</a>
                                         <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-gray-700"
                                             role="menuitem" tabindex="-1" id="user-menu-item-0">Register</a>
@@ -246,10 +247,10 @@
                                     Salir
                                 </a>
 
-                                <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                {{-- <form id="logout-form" method="POST" action="{{ route('logout') }}"
                                     style="display: none;">
                                     @csrf
-                                </form>
+                                </form> --}}
                             @else
                                 <a href="#"
                                     class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">Perfil</a>
@@ -262,10 +263,10 @@
                                     Salir
                                 </a>
 
-                                <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                {{-- <form id="logout-form" method="POST" action="{{ route('logout') }}"
                                     style="display: none;">
                                     @csrf
-                                </form>
+                                </form> --}}
                             @endif
 
 

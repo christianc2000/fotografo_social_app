@@ -27,7 +27,6 @@ class CarritoController extends Controller
     }
     public function generatePayment(Request $request)
     {
-
         try {
 
             DB::beginTransaction();
@@ -37,14 +36,14 @@ class CarritoController extends Controller
             $imagenes = $orden->imagenesOrden;
             $descuento = $request->costoTotal - 0.01;
             $total = round($request->costoTotal - $descuento, 3);
-
+            $nro_orden="ORDEN-" . $orden->id;
 
             $lcComerceID           = "d029fa3a95e174a19934857f535eb9427d967218a36ea014b70ad704bc6c8d1c";
             $lnMoneda              = 2;
             $lnTelefono            = $request->celular;
             $lcNombreUsuario       = $request->razon;
             $lnCiNit               = $request->nit;
-            $lcNroPago             = "Pago-" . rand(100000, 999999); // . $request->nroPago;
+            $lcNroPago             = $nro_orden; // . $request->nroPago;
             $lnMontoClienteEmpresa = $total;
             $lcCorreo              = $request->correo;
             $lcUrlCallBack = url('/api/urlcallback');
@@ -100,6 +99,7 @@ class CarritoController extends Controller
                 $orden->correo_orden = $request->correo;
                 $orden->celular = $request->celular;
                 $orden->razon = $request->razon;
+                $orden->nro_orden=$nro_orden;
                 // $orden->fecha_entrega=Carbon::now()->toDateTimeString();
                 if ($request->tipo_entrega == Orden::DOMICILIO) {
                     $orden->tipo_entrega = Orden::DOMICILIO;

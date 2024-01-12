@@ -14,7 +14,8 @@
                                     vendors</span> --}}
                             </div>
 
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Galeria del evento {{ $evento->titulo }}</p>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Galeria del evento
+                                {{ $evento->titulo }}</p>
                         </div>
                         <div class="flex items-center mt-4 gap-x-3">
                             <a href="{{ route('fotografo.evento.galeria.agregar', $evento->id) }}"
@@ -155,7 +156,8 @@
                                                         <h1 class="title-font text-lg font-medium text-gray-900 mb-3">
                                                             {{ $image->titulo }}</h1>
                                                         <p class="leading-relaxed">
-                                                        <p id="cantidad{{$image->id}}{{$evento->id}}">Clientes:
+                                                        <p id="cantidad{{ $image->id }}{{ $evento->id }}">
+                                                            Clientes:
                                                             @if (isset($image->clientes))
                                                                 {{ count(json_decode($image->clientes, true)) }}
                                                             @else
@@ -335,10 +337,23 @@
                     console.log("success: ", respuesta.data.clientes.length);
                     $('#span-analizado' + imageId + eventoId).show();
                     $('#span-no-analizado' + imageId + eventoId).hide();
-                    $('#cantidad'+imageId+eventoId).text("Clientes: "+respuesta.data.clientes.length);
+                    $('#cantidad' + imageId + eventoId).text("Clientes: " + respuesta.data.clientes
+                        .length);
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true
+                    }
+                    console.log("ingresa a success");
+                    toastr.success("Imagen analizada exitosamente");
                 },
                 error: function(error) {
                     console.log("Error al subir las imágenes: ", error);
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true
+                    }
+                    console.log("ingresa a error")
+                    toastr.error("Error al analizar la imágen");
                 }
             });
         });

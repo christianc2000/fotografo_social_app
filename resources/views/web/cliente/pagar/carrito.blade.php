@@ -1,21 +1,10 @@
 @extends('layouts.appfotografia')
 @section('contenido')
-    {{-- <div id="loadingSpinner"
-        class="d-none vh-100 vw-100 d-flex justify-content-center align-items-center flex-column body-background">
-        <!-- Icono de carga de Bootstrap -->
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Cargando...</span>
-        </div>
-        <!-- Mensaje de carga -->
-        <br>
-        <p class="mt-2">Cargando...</p>
-    </div> --}}
-    <div id="loadingSpinner"
-        class="fixed top-0 left-0 bottom-0 right-0 h-screen w-screen z-50 flex justify-center items-center"
-        style="display: none">
-        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+    <div id="loadingSpinner" class="fixed z-50"
+        style="display: none; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);">
+        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"
+            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
     </div>
-
     <div class="container-fluid d-flex justify-content-center aling-items-center">
         <div class="card" style="width: 100%;">
             <div class="card-body p-5">
@@ -54,8 +43,8 @@
                                 @foreach ($imagenes_carrito as $item)
                                     <div id="div{{ $item->id }}{{ Auth::user()->id }}"
                                         class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-                                        <img src="{{ $item->url }}" alt="product-image"
-                                            class="w-full rounded-lg sm:w-40" />
+                                        <img src="{{ $item->url }}" alt="product-image" class="w-full rounded-lg sm:w-40"
+                                            oncontextmenu="return false;" draggable="false" />
                                         <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                                             <div class="mt-5 sm:mt-0">
                                                 <h2 class="text-lg font-bold text-gray-900">{{ $item->image->titulo }}</h2>
@@ -562,13 +551,13 @@
 
         }
 
-        function showLoadingSpinner() {
-            document.getElementById('loadingSpinner').style.display = 'block';
-        }
+        // function showLoadingSpinner() {
+        //     document.getElementById('loadingSpinner').style.display = 'block';
+        // }
 
-        function hideLoadingSpinner() {
-            document.getElementById('loadingSpinner').style.display = 'none';
-        }
+        // function hideLoadingSpinner() {
+        //     document.getElementById('loadingSpinner').style.display = 'none';
+        // }
 
         function getValueWithValidation(nameInput, valueShow) {
             try {

@@ -136,7 +136,7 @@ class UserSeeder extends Seeder
             'lastname' => 'Heredia',
             'fecha_nacimiento' => '2000-01-04',
             'genero' => 'F',
-            'url_photo' => 'https://rekognitions3-bucket.s3.amazonaws.com/fotografia_app/perfil/Karoline.jpg',
+            'url_photo' => 'https://rekognitions3-bucket.s3.amazonaws.com/fotografia_app/perfil/karoline.jpg',
             'direccion_envio'=>'Calle Camiri, plan 3000, Santa Cruz', //cliente
             'gps'=>'-17.82858,-63.11273', //cliente
             'tipo' => 'C', //A=admin,F=fotografo,C=cliente,O=Organizador

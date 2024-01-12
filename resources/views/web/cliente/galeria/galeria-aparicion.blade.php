@@ -20,13 +20,18 @@
                                     vendors</span> --}}
                                     </div>
 
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Apareces en la foto <strong> {{$image->titulo}}</strong> del evento <strong>{{ $evento->titulo }}</strong></p>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">Apareces en la foto <strong>
+                                            {{ $image->titulo }}</strong> del evento <strong>{{ $evento->titulo }}</strong>
+                                    </p>
                                 </div>
                             </div>
                             {{-- componente --}}
                             <div class="relative mt-10 w-full flex flex-col text-gray-500 rounded cursor-pointer"
                                 style="height: 140px">
-                                <img src="{{ $image->url }}" class="object-contain w-32 h-32" alt=""  oncontextmenu="return false;">
+                                <img src="{{ $image->url_baja }}" class="object-contain w-32 h-32" alt=""
+                                    oncontextmenu="return false;" draggable="false">
+                                <p class="mt-1 text-xxs text-gray-500 dark:text-gray-300">By: <strong>{{ $image->user->name }}
+                                    {{ $image->user->lastname }}</strong></p>
                             </div>
                             <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-6 mb-4 mt-5">
                                 <div class="col-span-full mb-2">
@@ -65,7 +70,8 @@
                                 class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">Cancelar</a>
 
                             <button type="button" data-user="{{ Auth::user()->id }}" data-image="{{ $image->id }}"
-                                class="btn-add-cart rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Agregar al carrito</button>
+                                class="btn-add-cart rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Agregar
+                                al carrito</button>
                         </div>
                     </form>
                 </div>
@@ -93,6 +99,10 @@
             height: 200px;
         }
 
+        .text-xxs {
+            font-size: 0.6rem;
+        }
+
         .preview .remove {
             position: absolute;
             right: 0;
@@ -109,5 +119,4 @@
     </style>
     {{-- js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
 @endsection

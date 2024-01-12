@@ -49,8 +49,8 @@
                                 <div class="mt-2">
                                     <select name="categoria" id="categoria"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                        <option value="{{\App\Models\Image::PUB}}" selected>Público</option>
-                                        <option value="{{\App\Models\Image::PRIV}}">Privado</option>
+                                        <option value="{{ \App\Models\Image::PUB }}" selected>Público</option>
+                                        <option value="{{ \App\Models\Image::PRIV }}">Privado</option>
                                     </select>
                                 </div>
                             </div>
@@ -276,7 +276,7 @@
                         console.log("ingresa a success");
                         toastr.success("Imagenes subidas correctamente");
                         // Redirecciona a la URL devuelta por el servidor.
-                       window.location.href = respuesta.redirect_url;
+                        window.location.href = respuesta.redirect_url;
                     },
                     error: function(error) {
                         toastr.options = {

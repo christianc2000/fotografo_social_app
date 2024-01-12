@@ -3,26 +3,23 @@
 namespace App\Http\Controllers\Web\Cliente;
 
 use App\Http\Controllers\Controller;
-use App\Models\Orden;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PagoController extends Controller
+class NotificacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = Auth::user();
-        if ($user->tipo == "C") {
-            $ordens = $user->ordens()->where('tipo', Orden::COMPRA)->orderBy('created_at','desc')->get();//todos los pagos, aunque no estén pagados
-            $ordens_pagados = $user->ordens()->where('tipo', Orden::COMPRA)->whereNotNull('fecha_orden')->orderBy('created_at','desc')->get();
-            $ordens_no_pagados = $user->ordens()->where('tipo', Orden::COMPRA)->whereNull('fecha_orden')->orderBy('created_at','desc')->get();
-           
-            return view('web.cliente.pagar.index', compact('ordens','ordens_pagados','ordens_no_pagados'));
+        $user=Auth::user();
+        if($user->tipo=="C"){
+            $notificaciones=$user->notifications;
+            return view('web.cliente.notificacion.index',compact('notificaciones'));
+        }else{
+            return view('pages.utility.404');
         }
-        return view('pages.utility.404');
     }
 
     /**

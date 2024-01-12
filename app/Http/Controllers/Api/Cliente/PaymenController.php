@@ -13,11 +13,11 @@ class PaymenController extends Controller
 
     public function generatePdfOrder(Request $request)
     {
-        $orden= Orden::find($request->id);
-         //dd($orden, $orden->id);
+        $orden = Orden::find($request->id);
+        //dd($orden, $orden->id);
         $data = [
             'orden' => $orden,
-            'cantidad'=> count($orden->imagenesOrden)
+            'cantidad' => count($orden->imagenesOrden)
         ];
         $pdf = app('dompdf.wrapper');
         $pdf
@@ -32,25 +32,24 @@ class PaymenController extends Controller
     public function urlCallback(Request $request)
     {
         //Grupo01-12
-        $orden = Orden::last();
-        $orden->fecha_orden = Carbon::now()->toDateTimeString();
-        $orden->save();
-        
         $Venta = $request->input("PedidoID");
         $Fecha = $request->input("Fecha");
-        $NuevaFecha = date("Y-m-d", strtotime($Fecha));
-        $Hora = $request->input("Hora");
-        $MetodoPago = $request->input("MetodoPago");
-        $Estado = $request->input("Estado");
-        $Ingreso = true;
+        // $NuevaFecha = date("Y-m-d", strtotime($Fecha));
+        // $Hora = $request->input("Hora");
+        // $MetodoPago = $request->input("MetodoPago");
+        // $Estado = $request->input("Estado");
+        // $Ingreso = true;
 
-        // $cadena = "Grupo01-12";
+        // // $cadena = "Grupo01-12";
         $cadena = $Venta;
         $partes = explode("-", $cadena);
 
         // Acceder al número después del guion
         $orden_id = $partes[1];
         $orden = Orden::find($orden_id);
+        if ($orden->tipo_entrega == Orden::DOMICILIO) {
+            $orden->estado_orden = Orden::RECIBIDA;
+        }
         $orden->fecha_orden = Carbon::now()->toDateTimeString();
         $orden->save();
 

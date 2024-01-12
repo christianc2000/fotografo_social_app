@@ -12,9 +12,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\File;
+
 
 class ImagesController extends BaseController
 {
+
     public function storeImages(Request $request) //SOLO PARA SUBIR LAS IMAGENES
     {
         $validator = Validator::make($request->all(), [
@@ -32,26 +35,57 @@ class ImagesController extends BaseController
 
         $user = User::find($request->user_id);
         $evento = Evento::find($request->evento_id);
+        function compress_image($source_url, $destination_url, $quality)
+        {
+            $info = getimagesize($source_url);
 
+            if ($info['mime'] == 'image/jpeg')
+                $image = imagecreatefromjpeg($source_url);
+            elseif ($info['mime'] == 'image/gif')
+                $image = imagecreatefromgif($source_url);
+            elseif ($info['mime'] == 'image/png')
+                $image = imagecreatefrompng($source_url);
+
+            // Guarda la imagen
+            imagejpeg($image, $destination_url, $quality);
+
+            // Libera la memoria
+            imagedestroy($image);
+        }
+        function get_image_quality($source_url) {
+            $quality = shell_exec("identify -format '%Q' " . escapeshellarg($source_url));
+            return $quality;
+        }
         foreach ($request->imagenes as $imagen) {
 
             if ($imagen->isValid()) {
                 //$nombreOriginal = $imagen->getClientOriginalName();
 
                 $nombreImagen = time() . '_' . str_replace(' ', '_', $evento->titulo) . '.' . $imagen->getClientOriginalExtension();
-
+                // Crea un nuevo archivo temporal para la imagen de baja calidad
+                $tempPathLowQuality = tempnam(sys_get_temp_dir(), 'low_quality_');
+                compress_image($imagen->getRealPath(), $tempPathLowQuality,7);  // 60 es el valor de la calidad
+                $nombreImagenLowQuality = pathinfo($nombreImagen, PATHINFO_FILENAME) . '_low_quality.' . pathinfo($nombreImagen, PATHINFO_EXTENSION);
+               //return  new File($tempPathLowQuality);
                 $path = Storage::disk('s3')->putFileAs(
                     'fotografia_app/imagenes',
                     $imagen,
                     $nombreImagen,
                     'public'
                 );
+                $pathLowQuality = Storage::disk('s3')->putFileAs(
+                    'fotografia_app/imagenes',
+                    new File($tempPathLowQuality),  // Sube el archivo temporal modificado
+                    $nombreImagenLowQuality,
+                    'public'
+                );
                 // Obtenemos la URL de la imagen en S3.
                 $urlImagen = Storage::disk('s3')->url($path);
+                $urlImagenLowQuality = Storage::disk('s3')->url($pathLowQuality);
                 $image = Image::create([
                     'titulo' => $request->titulo,
                     'url' => $urlImagen,
-                    'url_baja' => $urlImagen,
+                    'url_baja' => $urlImagenLowQuality,
                     'tipo' => Image::EVENTO,
                     'precio' => $request->precio,
                     'categoria' => $request->categoria,
@@ -134,14 +168,13 @@ class ImagesController extends BaseController
                     $c = $c + 1;
                     $datos->push(['id' => $cliente->id, 'name' => $cliente->name . " " . $cliente->lastname]);
                     $cliente->notify(new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC));
-
                 }
             }
 
             $image->clientes = $datos;
             $image->analizado = true;
             $image->save();
-            
+
             return $this->sendResponse($image, "clientes encontrados");
         } else {
             return "no se encontró rostros";

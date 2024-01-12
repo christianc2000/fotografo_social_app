@@ -6,9 +6,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\EstiloController;
 use App\Http\Controllers\Web\Cliente\CarritoController;
+use App\Http\Controllers\Web\Cliente\ClienteController as ClienteClienteController;
 use App\Http\Controllers\Web\Cliente\EventoController as ClienteEventoController;
 use App\Http\Controllers\Web\Cliente\GaleriaController;
 use App\Http\Controllers\Web\Cliente\InvitacionController as ClienteInvitacionController;
+use App\Http\Controllers\Web\Cliente\NotificacionController;
 use App\Http\Controllers\Web\Cliente\PagoController;
 use App\Http\Controllers\Web\Fotografo\EventoController as FotografoEventoController;
 use App\Http\Controllers\Web\Fotografo\InvitacionController;
@@ -115,14 +117,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('cliente')->group(function () {
         Route::resource('carrito', CarritoController::class)->names('cliente.carrito');
         Route::get('/payments/generate_payment', [CarritoController::class, 'generatePayment']);
-        Route::get('galeria/{id}', [GaleriaController::class, 'show'])->name('cliente.aparicion.show'); //id de la foto de la gaeria donde aparece
+        Route::get('galeria/{id}', [GaleriaController::class, 'show'])->name('cliente.aparicion.show'); //id de la notificación de aparición en la foto de la galeria donde aparece
         Route::get('galeria/', [GaleriaController::class, 'index'])->name('cliente.galeria.index');
         Route::get('galeria/{id}/ver', [GaleriaController::class, 'ver'])->name('cliente.galeria.ver');
         Route::resource('pago', PagoController::class)->names('cliente.pago');
         Route::resource('evento', ClienteEventoController::class)->names('cliente.evento');
-        Route::resource('invitacion', ClienteInvitacionController::class)->names('cliente.invitacion');
+        Route::resource('invitacion', ClienteInvitacionController::class)->names('cliente.invitacion'); //id de la notificación de invitación a participar del evento
         Route::get('accept-invitation/{id}', [ClienteController::class, 'acceptInvitation']);
         Route::post('accept-invitation/{id}', [ClienteController::class, 'storeAccept'])->name('email.accept');
+        //imagenes de evento
+        Route::get('evento/{id}/image', [ClienteEventoController::class, 'imagesEvento'])->name('cliente.evento.images');
+        Route::resource('notificaciones', NotificacionController::class)->names('cliente.notificacion');
+        Route::get('perfil', [ClienteClienteController::class, 'perfil'])->name('cliente.perfil');
     });
 });
 

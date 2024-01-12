@@ -53,7 +53,7 @@
                             <div class="p-2 flex bg-white hover:bg-gray-100 border-b border-gray-100">
                                 <a class="relative block hover:bg-slate-50 dark:hover:bg-slate-700/20" href="#carrito">
                                     <div class="w-16"><img src="{{ $imagen->url }}" class="w-full h-full object-cover"
-                                            alt="img product"></div>
+                                            alt="img product" oncontextmenu="return false;" draggable="false"></div>
                                 </a>
                                 <div class="flex-auto text-sm w-32 px-1">
                                     <div class="font-bold">{{ $imagen->image->titulo }}</div>

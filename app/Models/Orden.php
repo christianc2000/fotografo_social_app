@@ -22,6 +22,7 @@ class Orden extends Model
     const ONLINE = "Descarga online";
 
     protected $fillable = [
+        'nro_orden',
         'nit',
         'direccion_envio',
         'correo_orden',

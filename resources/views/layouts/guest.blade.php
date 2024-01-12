@@ -38,7 +38,7 @@
                 <div>
                     <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8 bg-transparent">
                         <!-- Logo -->
-                        <a class="block" href="#">
+                        <a class="block" href="/">
                             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <ellipse cx="16" cy="16" rx="16" ry="16" fill="url(#pattern0)"/>
                                 <defs>
