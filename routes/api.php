@@ -47,10 +47,6 @@ Route::prefix('cliente')->group(function () {
     Route::post('marcar-notificaciones', [NotificacionController::class, 'marcarNotificaciones']);
     Route::post('perfil',[ClienteController::class,'updatePerfil']);
     Route::post('password',[ClienteController::class,'updatePassword']);
-});
-Route::post('/urlcallback', [PaymenController::class, 'urlCallback']);
-Route::post('/mis-eventos', [EventoController::class, 'misEventos']);
-Route::get('/todos-eventos', [EventoController::class, 'todosEventos']);
 // MOVIL
 Route::post('/login', [MovilController::class, 'login']);
 Route::post('/eventos', [MovilController::class, 'eventos']);
@@ -58,3 +54,8 @@ Route::post('/evento', [MovilController::class, 'miEvento']);
 Route::post('/evento/galeria', [MovilController::class, 'galeriaEvento']);
 Route::post('/galeria', [MovilController::class, 'galeria']);
 Route::post('/notificaciones', [MovilController::class, 'notificaciones']);
+});
+Route::post('/urlcallback', [PaymenController::class, 'urlCallback']);
+Route::post('/mis-eventos', [EventoController::class, 'misEventos']);
+Route::get('/todos-eventos', [EventoController::class, 'todosEventos']);
+

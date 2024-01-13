@@ -46,7 +46,7 @@ class MovilController extends BaseController
             $token = $user->createToken('auth_token')->plainTextToken;
 
             $result = [
-                'access_token' => $token,
+                'token' => $token,
                 'token_type' => 'Bearer',
                 'user' => $user
             ];
