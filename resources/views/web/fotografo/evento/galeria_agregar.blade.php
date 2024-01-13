@@ -259,9 +259,9 @@
                 }
                 formData.append('user_id', userId);
                 formData.append('evento_id', eventoId);
-
+                var apiUrl = new URL('/api/fotografo/evento/galeria/agregar', window.location.origin);
                 $.ajax({
-                    url: '/api/fotografo/evento/galeria/agregar',
+                    url: apiUrl.toString(),
                     type: 'POST',
                     processData: false,
                     contentType: false,
