@@ -169,8 +169,8 @@
                                         </a>
                                     </li>
                                     <li class="mb-1 last:mb-0">
-                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate {{-- @if (Route::is('servicio.index') || Route::is('servicio.create') || Route::is('servicio.edit')) {{ '!text-indigo-500' }} @endif --}}"
-                                            href="{{route('organizador.vincular.fotografo')}}">
+                                        <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate @if (Route::is('organizador.vincular.fotografo')) {{ '!text-indigo-500' }} @endif "
+                                          href="{{route('organizador.vincular.fotografo')}}">
                                             <span
                                                 class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Fotografo</span>
                                         </a>
@@ -223,13 +223,13 @@
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Evento</span>
                                     </a>
                                 </li>
-                                <li class="mb-1 last:mb-0">
+                                {{-- <li class="mb-1 last:mb-0">
                                     <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate  @if (Route::is('servicio.index') || Route::is('servicio.create') || Route::is('servicio.edit')) {{ '!text-indigo-500' }} @endif "
                                          href="#">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Fotografo</span>
                                     </a>
-                                </li> 
+                                </li>  --}}
 
                             </ul>
                         </div>

@@ -13,10 +13,12 @@ use App\Http\Controllers\Web\Cliente\InvitacionController as ClienteInvitacionCo
 use App\Http\Controllers\Web\Cliente\NotificacionController;
 use App\Http\Controllers\Web\Cliente\PagoController;
 use App\Http\Controllers\Web\Fotografo\EventoController as FotografoEventoController;
+use App\Http\Controllers\Web\Fotografo\FotografoController as FotografoFotografoController;
 use App\Http\Controllers\Web\Fotografo\InvitacionController;
 use App\Http\Controllers\Web\Organizador\ClienteController;
 use App\Http\Controllers\Web\Organizador\EventoController;
 use App\Http\Controllers\Web\Organizador\FotografoController;
+use App\Http\Controllers\Web\Organizador\OrganizadorController;
 use App\Http\Controllers\Web\PlanController;
 use App\Http\Controllers\Web\SuscripcionController;
 use App\Http\Controllers\Web\WelcomeController;
@@ -98,11 +100,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('evento/{id}/agregar/fotografos', [EventoController::class, 'agregarFotografoStore'])->name('organizacion.evento.fotografos.agregar.store');
         Route::get('evento/{id}/clientes', [ClienteController::class, 'index'])->name('organizador.evento.cliente.index');
         Route::get('evento/{id}/agregar/cliente', [ClienteController::class, 'agregarCliente'])->name('organizador.evento.cliente.agregar');
-        Route::post('evento/{id}/agreger/cliente', [ClienteController::class, 'agregarClienteStore'])->name('organizacion.evento.cliente.agregar.store');
+        Route::post('evento/{id}/agreger/cliente', [ClienteController::class, 'agregarClienteStore'])->name('organizacion.evento.cliente.agregar.store');//invitar al cliente por medio de las notificaiones, se crea un código qr de acceso
         Route::post('evento/{id}/agregar/cliente/correo', [ClienteController::class, 'agregarClienteCorreoStore'])->name('organizacion.evento.cliente.agregar.correo.store');
         Route::post('send-email', [ClienteController::class, 'sendEmail'])->name('email.send');
         Route::get('vincular/fotografo', [FotografoController::class, 'vincularFotografo'])->name('organizador.vincular.fotografo');
         Route::post('vincular/fotografo', [FotografoController::class, 'vincularFotografoStore'])->name('organizador.vincular.fotografo.store');
+        Route::get('perfil', [OrganizadorController::class, 'perfil'])->name('organizador.perfil');
     });
     //Fotografo
     Route::prefix('fotografo')->group(function () {
@@ -112,6 +115,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('evento/{id}/galeria/agregar', [FotografoEventoController::class, 'agregarImagenes'])->name('fotografo.evento.galeria.agregar');
         Route::get('evento/galeria/imagen/{id}/editar', [FotografoEventoController::class, 'editarImage'])->name('fotografo.evento.galeria.editar');
         Route::put('evento/galeria/imagen/{id}/update', [FotografoEventoController::class, 'updateImage'])->name('fotografo.evento.galeria.update');
+        Route::get('perfil', [FotografoFotografoController::class, 'perfil'])->name('fotografo.perfil');
     });
 
     Route::prefix('cliente')->group(function () {
@@ -121,11 +125,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('galeria/', [GaleriaController::class, 'index'])->name('cliente.galeria.index');
         Route::get('galeria/{id}/ver', [GaleriaController::class, 'ver'])->name('cliente.galeria.ver');
         Route::resource('pago', PagoController::class)->names('cliente.pago');
-        Route::get('pago/{id}/imagenes', [PagoController::class,'imagesOrden'])->name('cliente.pago.orden.imagenes');
+        Route::get('pago/{id}/imagenes', [PagoController::class, 'imagesOrden'])->name('cliente.pago.orden.imagenes');
         Route::resource('evento', ClienteEventoController::class)->names('cliente.evento');
         Route::resource('invitacion', ClienteInvitacionController::class)->names('cliente.invitacion'); //id de la notificación de invitación a participar del evento
         Route::get('accept-invitation/{id}', [ClienteController::class, 'acceptInvitation']);
-        Route::post('accept-invitation/{id}', [ClienteController::class, 'storeAccept'])->name('email.accept');
+        Route::post('accept-invitation/{id}', [ClienteController::class, 'storeAccept'])->name('email.accept');//aceptación de la invitación por medio del correo
         //imagenes de evento
         Route::get('evento/{id}/image', [ClienteEventoController::class, 'imagesEvento'])->name('cliente.evento.images');
         Route::resource('notificaciones', NotificacionController::class)->names('cliente.notificacion');

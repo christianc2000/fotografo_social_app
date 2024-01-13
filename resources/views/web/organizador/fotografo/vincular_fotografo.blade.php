@@ -107,7 +107,7 @@
                                                 <tr>
                                                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                         <div class="flex min-w-0 gap-x-4">
-                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-fill"
+                                                            <img class="h-16 w-16 flex-none rounded-full bg-gray-900 object-cover object-center"
                                                                 src="{{ $fotografo->url_photo }}" alt="">
                                                             <div class="min-w-0 flex-auto">
                                                                 <p

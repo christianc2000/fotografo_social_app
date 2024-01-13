@@ -65,6 +65,7 @@ class ClienteController extends Controller
                 if (isset($evento)) {
                     return redirect()->route('cliente.evento.index');
                 }
+                $evento=Evento::find($id);
                 return view('email.accept_invitacion', compact('evento'));
             } else {
                 return redirect()->route('logout');
@@ -73,7 +74,7 @@ class ClienteController extends Controller
             return redirect()->route('login');
         }
     }
-    public function storeAccept($id, Request $request)
+    public function storeAccept($id, Request $request)//cuando el cliente acepta la invitación por el correo
     {
         // Asegúrate de que el usuario esté autenticado
         $cliente = Auth::user();
@@ -138,7 +139,7 @@ class ClienteController extends Controller
             return redirect()->route('organizador.evento.cliente.index', $request->evento)->with('error', "Falla al enviar el correo");
         }
     }
-    public function agregarClienteStore(Request $request, $id)
+    public function agregarClienteStore(Request $request, $id)//cuando el organizador agrega a un cliente por notificaciones
     {
         $user = Auth::user();
 
@@ -150,9 +151,12 @@ class ClienteController extends Controller
                 ]);
 
                 $cliente = User::find($request->cliente_id);
-                $cliente->vinculacionEvento()->attach($evento, [
+                $cliente->vinculacionEvento()->attach($id, [
                     'fecha_envio' => Carbon::now()->toDateTimeString(),
+                    'fecha_aceptacion' => Carbon::now()->toDateTimeString(),
+                    'estado' => Evento::ACEPTADO
                 ]);
+                
                 $information = ["vinculacion" => $cliente->vinculacionEvento->find($evento->id), "usuario" => ["name" => $cliente->name . " " . $cliente->lastname, "email" => $cliente->email, "tipo" => $cliente->tipo, "url_photo" => $cliente->url_photo]];
                 $qrCode = QrCode::format('png')->size(400)->generate(json_encode($information));
                 $name = time() . '_' . 'qr_' . $cliente->name . '_evento' . '.png';
@@ -168,7 +172,7 @@ class ClienteController extends Controller
                 //logica para enviar la invitación por correo
             } else {
                 //si el evento que pasa no existe
-                return redirect()->route('organizador.evento.cliente.index', $evento->id)->with('error', "Error evento no le pertenece");
+                return redirect()->route('organizador.evento.cliente.index', $id)->with('error', "Error evento no le pertenece");
             }
         } else {
             return view('pages/utility/404');

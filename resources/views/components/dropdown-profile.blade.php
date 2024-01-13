@@ -26,14 +26,14 @@
         </div>
         <ul>
             <li>
-                <a class="font-medium text-sm text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
-                    href="{{ route('profile.show') }}">Settings</a>
+                <a class="font-medium text-sm text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3"
+                    href="{{Auth::user()->tipo=="F"? route('fotografo.perfil'):(Auth::user()->tipo=="O"? route('organizador.perfil'):'') }}">Perfil</a>
             </li>
             <li>
 
 
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white color-texto">
+                    class="font-medium text-sm text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center py-1 px-3">
                     Salir
                 </a>
 
