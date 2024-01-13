@@ -26,7 +26,7 @@ class ImagesController extends BaseController
             'precio' => 'required',
             'user_id' => 'required|exists:users,id',
             'evento_id' => 'required|exists:eventos,id',
-            'imagenes.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'imagenes.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
         ]);
         if ($validator->fails()) {
             return $this->sendError('Error de validación', $validator->errors(), 422); // 422 es el código de respuesta HTTP para errores de validación
