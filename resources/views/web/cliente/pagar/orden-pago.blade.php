@@ -160,14 +160,17 @@
                                                         $interval = $fecha_actual->diff($created_at);
                                                         $b = false;
                                                         if ($interval->i > 30) {
+                                                            $orden->estado_orden=\App\Models\Orden::VEN;
+                                                            $orden->save();
                                                             $b = true;
                                                         }
                                                     @endphp
-                                                    @if ($b)
+                                                    {{-- @if ($b)
                                                         {{ \App\Models\Orden::VEN }}
                                                     @else
                                                         {{ \App\Models\Orden::VAL }}
-                                                    @endif
+                                                    @endif --}}
+                                                    {{$orden->estado_orden}}
                                                 </p>
                                             </div>
                                         </div>

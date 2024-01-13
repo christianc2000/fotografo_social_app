@@ -51,6 +51,7 @@ class PaymenController extends Controller
             $orden->estado_orden = Orden::RECIBIDA;
         }
         $orden->fecha_orden = Carbon::now()->toDateTimeString();
+        $orden->estado_orden = Orden::USADO;
         $orden->save();
 
         $imagenes = $orden->imagenesOrden;

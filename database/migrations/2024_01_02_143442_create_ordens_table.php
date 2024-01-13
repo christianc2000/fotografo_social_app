@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('razon')->nullable(); //se llena cuando ya se realiza el pago
             $table->string('gps')->nullable(); //se llena cuando ya se realiza el pago y es a domicilio
             $table->string('qr_pago')->nullable();
+            $table->string('estado_qr')->nullable();
             $table->timestamp('fecha_creacion_qr')->nullable();//registramos la fecha en la que se crea el qr, para validar por si pasa el tiempo de vida que tiene que es de 30 minutos
             $table->timestamp('fecha_orden')->nullable(); //se llena cuando ya se realiza el pago 
             $table->timestamp('fecha_entrega')->nullable(); //se llena cuando genera el pago y es a domicilio

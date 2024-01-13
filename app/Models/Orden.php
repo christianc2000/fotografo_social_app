@@ -23,6 +23,7 @@ class Orden extends Model
     //ESTADO DEL QR
     const VAL = "QR válido";
     const VEN = "QR vencido";
+    const USADO = "QR usado";
     protected $fillable = [
         'nro_orden',
         'nit',
@@ -32,6 +33,7 @@ class Orden extends Model
         'celular',
         'gps',
         'qr_pago',
+        'estado_qr',
         'fecha_creacion_qr',
         'fecha_orden',
         'fecha_entrega',
