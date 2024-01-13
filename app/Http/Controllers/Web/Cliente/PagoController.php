@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Cliente;
 
 use App\Http\Controllers\Controller;
 use App\Models\Orden;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,6 +51,14 @@ class PagoController extends Controller
         if ($user->tipo == "C") {
             $orden = $user->ordens->find($id);
             if (isset($orden)) {
+                $fecha_actual = new DateTime();
+                $created_at = new DateTime($orden->fecha_creacion_qr);
+                $interval = $fecha_actual->diff($created_at);
+                $b = false;
+                if ($interval->i > 30&&$orden->estado_orden==Orden::VAL) {
+                    $orden->estado_orden=Orden::VEN;
+                    $orden->save();
+                }
                 return view('web.cliente.pagar.orden-pago', compact('orden', 'user'));
             }
         }

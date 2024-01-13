@@ -138,11 +138,11 @@
                                         <div class="col-span-full mb-2">
                                             <label for="titulo"
                                                 class="block text-sm leading-6 font-medium text-gray-700 dark:text-white">Fecha
-                                                de creación</label>
+                                                de QR</label>
                                             <div class="mt-2">
                                                 <p id="titulo"
                                                     class="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                                    {{ $orden->updated_at }}</p>
+                                                    {{ $orden->fecha_creacion_qr }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -154,22 +154,6 @@
                                             <div class="mt-2">
                                                 <p id="titulo"
                                                     class="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                                    @php
-                                                        $fecha_actual = new DateTime();
-                                                        $created_at = new DateTime($orden->fecha_creacion_qr);
-                                                        $interval = $fecha_actual->diff($created_at);
-                                                        $b = false;
-                                                        if ($interval->i > 30) {
-                                                            $orden->estado_orden=\App\Models\Orden::VEN;
-                                                            $orden->save();
-                                                            $b = true;
-                                                        }
-                                                    @endphp
-                                                    {{-- @if ($b)
-                                                        {{ \App\Models\Orden::VEN }}
-                                                    @else
-                                                        {{ \App\Models\Orden::VAL }}
-                                                    @endif --}}
                                                     {{$orden->estado_orden}}
                                                 </p>
                                             </div>
