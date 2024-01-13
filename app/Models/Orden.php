@@ -20,7 +20,9 @@ class Orden extends Model
     //TIPO DE ENTREGA
     const DOMICILIO = "Entrega a domicilio";
     const ONLINE = "Descarga online";
-
+    //ESTADO DEL QR
+    const VAL = "QR válido";
+    const VEN = "QR vencido";
     protected $fillable = [
         'nro_orden',
         'nit',
@@ -30,6 +32,7 @@ class Orden extends Model
         'celular',
         'gps',
         'qr_pago',
+        'fecha_creacion_qr',
         'fecha_orden',
         'fecha_entrega',
         'estado_orden',
@@ -46,9 +49,8 @@ class Orden extends Model
     }
 
     //relación de 1 a muchos
-    public function imagenesOrden(){
+    public function imagenesOrden()
+    {
         return $this->hasMany(ImageOrden::class);
     }
-
-  
 }

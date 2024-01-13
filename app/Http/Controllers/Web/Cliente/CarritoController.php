@@ -150,6 +150,7 @@ class CarritoController extends BaseController
                 'public'
             );
             $orden->qr_pago = Storage::disk('s3')->url($path);
+            $orden->fecha_creacion_qr=Carbon::now()->toDateTimeString();
             $orden->save();
             $response = [
                 'success' => true,

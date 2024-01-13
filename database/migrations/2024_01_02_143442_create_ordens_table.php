@@ -16,18 +16,19 @@ return new class extends Migration
             $table->id();
             $table->string('nro_orden')->nullable();
             $table->string('nit')->nullable();
-            $table->string('direccion_envio')->nullable();//se llena cuando ya se realiza el pago y es a domicilio
-            $table->string('correo_orden')->nullable();//se llena cuando ya se realiza el pago
-            $table->string('celular')->nullable();//se llena cuando ya se realiza el pago
-            $table->string('razon')->nullable();//se llena cuando ya se realiza el pago
-            $table->string('gps')->nullable();//se llena cuando ya se realiza el pago y es a domicilio
-           $table->string('qr_pago')->nullable();
-            $table->timestamp('fecha_orden')->nullable();//se llena cuando ya se realiza el pago 
-            $table->timestamp('fecha_entrega')->nullable();//se llena cuando genera el pago y es a domicilio
-            $table->string('estado_orden')->nullable();//se llena cuando ya se realiza el pago
-            $table->string('tipo_entrega')->nullable();//si es a domicilio o online
+            $table->string('direccion_envio')->nullable(); //se llena cuando ya se realiza el pago y es a domicilio
+            $table->string('correo_orden')->nullable(); //se llena cuando ya se realiza el pago
+            $table->string('celular')->nullable(); //se llena cuando ya se realiza el pago
+            $table->string('razon')->nullable(); //se llena cuando ya se realiza el pago
+            $table->string('gps')->nullable(); //se llena cuando ya se realiza el pago y es a domicilio
+            $table->string('qr_pago')->nullable();
+            $table->timestamp('fecha_creacion_qr')->nullable();//registramos la fecha en la que se crea el qr, para validar por si pasa el tiempo de vida que tiene que es de 30 minutos
+            $table->timestamp('fecha_orden')->nullable(); //se llena cuando ya se realiza el pago 
+            $table->timestamp('fecha_entrega')->nullable(); //se llena cuando genera el pago y es a domicilio
+            $table->string('estado_orden')->nullable(); //se llena cuando ya se realiza el pago
+            $table->string('tipo_entrega')->nullable(); //si es a domicilio o online
             $table->string('tipo')->default(Orden::CARRITO);
-            $table->decimal('total',8,2)->nullable();
+            $table->decimal('total', 8, 2)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });
