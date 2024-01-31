@@ -20,11 +20,21 @@
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/nav.css') }}">
     <link rel="stylesheet" href="{{ asset('estilos_tecno/css/animacion.css') }}">
 
+
+    <!-- Scripts -->
+
+
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="{{ asset('../estilos_tecno/js/nav.js') }}"></script>
     <script src="{{ asset('../estilos_tecno/js/carousel.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+
+
+
+
     {{-- <script src="{{ asset('estilos_tecno/js/carrito.js') }}"></script> --}}
     {{-- bootstrap 5 --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
@@ -32,6 +42,7 @@
 
 
 <body class="h-full" data-bs-theme="light">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!--
   This example requires updating your template:
 
@@ -94,8 +105,8 @@
                                         <span class="absolute -inset-1.5"></span>
                                         <span class="sr-only">Open user menu</span>
                                         @auth
-                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->url_photo }}"
-                                                alt="">
+                                            <img class="h-8 w-8 rounded-full object-cover"
+                                                src="{{ Auth::user()->url_photo }}" alt="">
 
                                         @endauth
                                         @guest
@@ -121,8 +132,9 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        <a href="{{route('cliente.perfil')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
-                                            tabindex="-1" id="user-menu-item-0">Perfil</a>
+                                        <a href="{{ route('cliente.perfil') }}"
+                                            class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                            id="user-menu-item-0">Perfil</a>
                                         @if (Auth::user()->tipo != 'C')
                                             <a href="{{ route('dashboard') }}"
                                                 class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
@@ -321,8 +333,6 @@
             </div>
     </div>
     </nav>
-
-
     @if (Route::is('welcome'))
         <header class="bg-white shadow active">
             <div class="header-container">
@@ -703,6 +713,138 @@
             /* Otros estilos... */
         }
     </style>
+    @auth
+        <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+        <script>
+            var firebaseConfig = {
+                apiKey: "AIzaSyBGP3CaBi0iuhfptdT3Sct-qoRaxqdfz9Y",
+                authDomain: "push-notification-b18d2.firebaseapp.com",
+                projectId: "push-notification-b18d2",
+                storageBucket: "push-notification-b18d2.appspot.com",
+                messagingSenderId: "959738834438",
+                appId: "1:959738834438:web:2671554cd95552ea28dd87",
+                measurementId: "G-8F0172YKBF"
+            };
+            firebase.initializeApp(firebaseConfig);
+            const messaging = firebase.messaging();
+
+            function startFCM() {
+                messaging
+                    .requestPermission()
+                    .then(function() {
+                        return messaging.getToken()
+                    })
+                    .then(function(response) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url: '{{ route('store.token') }}',
+                            type: 'POST',
+                            data: {
+                                token: response
+                            },
+                            dataType: 'JSON',
+                            success: function(response) {
+                                console.log('Token stored.');
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            },
+                        });
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+            }
+            messaging.onMessage(function(payload) {
+                const title = payload.notification.title;
+                const options = {
+                    body: payload.notification.body,
+                    icon: payload.notification.icon,
+                };
+                new Notification(title, options);
+                // Obtén el div de notificación
+                var notificationDiv = document.getElementById('notification');
+                console.log("notificationDiv: ", notificationDiv);
+                // Verifica si el div tiene un elemento span
+                var span = notificationDiv.querySelector('span');
+
+                if (span) {
+                    console.log("tiene span")
+                    // Si el div ya tiene un span, incrementa el valor del texto en uno
+                    var count = parseInt(span.textContent);
+                    span.textContent = count + 1;
+                } else {
+                    console.log("no tiene span");
+                    // Si el div no tiene un span, elimina las clases antiguas
+                    notificationDiv.classList.remove('top-0', 'right-0', 'w-2.5', 'h-2.5');
+
+                    // Añade las nuevas clases al div
+                    notificationDiv.classList.add('bottom-4', 'left-6', 'w-5', 'h-5', 'flex', 'items-center',
+                        'justify-center');
+                    // Si el div no tiene un span, crea uno y establece su valor en 1
+                    span = document.createElement('span');
+                    span.className = 'text-xxs text-white';
+                    span.textContent = 1;
+
+                    // Agrega el nuevo span al div de notificación
+                    notificationDiv.appendChild(span);
+                }
+                // ***************************INSERTANDO EL <li>
+                // Obtén el div de notificación
+                var notificationDiv = document.getElementById('new-notification');
+                // Verifica si el div tiene un elemento span con id 'sin-notificacion-nueva'
+                var sinNotificacionNueva = document.getElementById('sin-notificacion-nueva');
+
+                if (sinNotificacionNueva) {
+                    // Si el div tiene un span con id 'sin-notificacion-nueva', lo elimina
+                    sinNotificacionNueva.remove();
+                }
+                // Crea un nuevo elemento li
+                var li = document.createElement('li');
+                li.className = 'border-b border-slate-200 dark:border-slate-700 last:border-0';
+
+                // Crea el enlace a
+                var a = document.createElement('a');
+                a.className = 'block py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-700/20';
+                a.href = payload.data.url;
+
+                // Crea los elementos span
+                var span1 = document.createElement('span');
+                span1.className = 'block text-sm mb-2';
+                span1.innerHTML =
+                    '📣 <span class="font-medium text-slate-800 dark:text-slate-100">' + payload.notification.title +
+                    '</span> ' + payload.notification
+                    .body; // Asegúrate de reemplazar 'notification.titulo' con el título de la notificación real
+
+                var span2 = document.createElement('span');
+                span2.className = 'block text-xs font-medium text-slate-400 dark:text-slate-500';
+                span2.textContent = notification
+                    .time; // Asegúrate de reemplazar 'notification.time' con la hora de la notificación real
+
+                // Agrega los elementos span al enlace a
+                a.appendChild(span1);
+                a.appendChild(span2);
+
+                // Agrega el enlace a al elemento li
+                li.appendChild(a);
+
+                // Agrega el nuevo elemento li al div de notificación
+                //  notificationDiv.appendChild(li);
+                var parentDiv = notificationDiv.parentNode;
+
+                // inserta 'li' después de 'notificationDiv'
+                parentDiv.insertBefore(li, notificationDiv.nextSibling);
+                console.log("llega una notificación....", payload);
+            });
+            document.addEventListener('DOMContentLoaded', (event) => {
+                startFCM();
+            });
+        </script>
+    @endauth
+
 </body>
 
 </html>

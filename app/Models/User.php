@@ -44,6 +44,7 @@ class User extends Authenticatable
         'slogan', //fotografo
         'direccion_envio', //cliente
         'gps', //cliente
+        'device_token',
         'email',
         'password'
     ];
@@ -117,7 +118,7 @@ class User extends Authenticatable
             ->where('tipo', 'F')
             ->withPivot('estado')->withTimestamps();
     }
-   
+
     public function images()
     {
         return $this->hasMany(Image::class);
@@ -129,7 +130,13 @@ class User extends Authenticatable
         return $this->hasMany(Orden::class);
     }
 
-    public function suscripcions(){
+    public function suscripcions()
+    {
         return $this->hasMany(Suscripcion::class);
+    }
+
+    public function devices()
+    {
+        return $this->hasMany(DeviceToken::class);
     }
 }

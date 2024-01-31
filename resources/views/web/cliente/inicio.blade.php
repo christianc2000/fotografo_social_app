@@ -1,14 +1,7 @@
 @extends('layouts.appfotografia')
 
 @section('contenido')
-    {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> --}}
-
     <div>
-        {{-- <div class="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8"> --}}
-
         @php
             $logo = session('logo');
         @endphp
@@ -119,15 +112,6 @@
     {{-- js --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // var options = {
-            //     strings: ["N", "o", "m", "b", "r", "e", " ", "d", "e", " ", "l", "a", " ", "E", "m", "p", "r", "e", "s", "a"],
-            //     typeSpeed: 100,
-            //     backSpeed: 50,
-            //     showCursor: false
-            // };
-
-            // var typed = new Typed("#titleContainer", options);
-
             var typed = new Typed('#titleContainer', {
                 strings: ['Fotografías y eventos especiales', ' Tu mejor opción'],
                 typeSpeed: 60,
@@ -135,46 +119,6 @@
                 loop: true
             });
         });
-        
-        // addEventListenersToBtnDel();
-
-        // function addEventListenersToBtnDel() {
-        //     var btnsDel = document.querySelectorAll('.btn-del');
-        //     btnsDel.forEach(function(btnDel) {
-        //         // Asegúrate de que no estás agregando el mismo detector de eventos varias veces
-        //         if (!btnDel.hasListener) {
-        //             btnDel.addEventListener('click', function(event) {
-        //                 event.stopPropagation();
-        //                 var imageId = event.currentTarget.dataset.image; // Extrae el atributo data-image
-        //                 var userId = event.currentTarget.dataset.user; // Extrae el atributo data-user
-        //                 var liParent = event.currentTarget.closest('li');
-        //                 var apiUrl = new URL('/api/cliente/del-cart', window.location.origin);
-        //                 // var data = {
-        //                 //     image_orden_id: imageId,
-        //                 //     user_id: userId
-        //                 // };
-        //                 // fetch(apiUrl, {
-        //                 //         method: 'POST',
-        //                 //         headers: {
-        //                 //             'Content-Type': 'application/json',
-        //                 //         },
-        //                 //         body: JSON.stringify(data),
-        //                 //     })
-        //                 //     .then(response => response.json())
-        //                 //     .then(data => {
-        //                 //         document.getElementById('cantidad-carrito').textContent = data.data
-        //                 //             .imagenes_orden.length;
-        //                 //         document.getElementById('btn-total').textContent = "Total " + data.data
-        //                 //             .total + "Bs";
-        //                 //         liParent.remove();
-        //                 //     })
-        //                 //     .catch((error) => {
-        //                 //         console.error('Error:', error);
-        //                 //     });
-        //             });
-        //             btnDel.hasListener = true;
-        //         }
-        //     });
-        // }
     </script>
+    
 @endsection

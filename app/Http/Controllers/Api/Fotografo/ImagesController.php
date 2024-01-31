@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Fotografo;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Http\Controllers\Web\NotificationSendController;
 use App\Models\Evento;
 use App\Models\Image;
 use App\Models\User;
@@ -52,7 +53,8 @@ class ImagesController extends BaseController
             // Libera la memoria
             imagedestroy($image);
         }
-        function get_image_quality($source_url) {
+        function get_image_quality($source_url)
+        {
             $quality = shell_exec("identify -format '%Q' " . escapeshellarg($source_url));
             return $quality;
         }
@@ -64,9 +66,9 @@ class ImagesController extends BaseController
                 $nombreImagen = time() . '_' . str_replace(' ', '_', $evento->titulo) . '.' . $imagen->getClientOriginalExtension();
                 // Crea un nuevo archivo temporal para la imagen de baja calidad
                 $tempPathLowQuality = tempnam(sys_get_temp_dir(), 'low_quality_');
-                compress_image($imagen->getRealPath(), $tempPathLowQuality,7);  // 60 es el valor de la calidad
+                compress_image($imagen->getRealPath(), $tempPathLowQuality, 7);  // 60 es el valor de la calidad
                 $nombreImagenLowQuality = pathinfo($nombreImagen, PATHINFO_FILENAME) . '_low_quality.' . pathinfo($nombreImagen, PATHINFO_EXTENSION);
-               //return  new File($tempPathLowQuality);
+                //return  new File($tempPathLowQuality);
                 $path = Storage::disk('s3')->putFileAs(
                     'fotografia_app/imagenes',
                     $imagen,
@@ -92,6 +94,7 @@ class ImagesController extends BaseController
                     'user_id' => $user->id,
                     'evento_id' => $evento->id
                 ]);
+               $this->analizarImagene($evento->id, $image->id);
             } else {
                 return response()->json([
                     'success' => false,
@@ -100,6 +103,7 @@ class ImagesController extends BaseController
                 ]);
             }
         }
+
         return response()->json([
             'success' => true,
             'message' => '¡La imagen fué subida exitosamente!',
@@ -183,7 +187,96 @@ class ImagesController extends BaseController
 
         // return $clientes;
     }
+//ANALIZAR LAS IMAGENES SUBIDAS
+public function analizarImagene($evento_id, $image_id)
+    { //id de la imagen, y id del evento
+        $validator = Validator::make(['evento_id' => $evento_id, 'image_id' => $image_id], [
+            'evento_id' => 'required|exists:eventos,id',
+            'image_id' => 'required|exists:images,id',
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Error de validación', $validator->errors(), 422);
+        }
+        $evento = Evento::find($evento_id);
+        $clientes = $evento->clientesVinculadosEventoVinculados;
+        //trabajamos con la imagen
+        $image = Image::find($image_id);
 
+
+        $client_rekognition = new RekognitionClient([
+            'region' => 'us-east-1',
+            'version' => 'latest'
+        ]);
+        // var_dump($client_rekognition);
+        // dd($client_rekognition);
+        $url_s3 = str_replace(Storage::disk('s3')->url(''), '', $image->url);
+        // return $url_s3;
+        $detect_image = $client_rekognition->detectFaces([
+            'Image' => [
+                'S3Object' => [
+                    'Bucket' => env('AWS_BUCKET'),
+                    'Name' =>  $url_s3
+                ],
+            ],
+        ]);
+        if (count($detect_image['FaceDetails']) > 0) {
+            $datos = new Collection();
+            $c = 0;
+            $sourceImage = [
+                'S3Object' => [
+                    'Bucket' => env('AWS_BUCKET'),
+                    'Name' => $url_s3
+                ],
+            ];
+            foreach ($clientes as $cliente) {
+
+                $url_cliente = str_replace(Storage::disk('s3')->url(''), '', $cliente->url_photo);
+
+                $targetImage = [
+                    'S3Object' => [
+                        'Bucket' => env('AWS_BUCKET'),
+                        'Name' => $url_cliente // Asegúrate de que esto apunta a la URL correcta del cliente
+                    ],
+                ];
+
+                $compareFacesResult = $client_rekognition->compareFaces([
+                    'SourceImage' => $targetImage,
+                    'TargetImage' => $sourceImage,
+                    'SimilarityThreshold' => 60.0, // Puedes ajustar este valor según tus necesidades
+                ]);
+
+                if (count($compareFacesResult['FaceMatches']) > 0) {
+                    // Aquí puedes manejar los rostros que coinciden
+                    $c = $c + 1;
+                    $datos->push(['id' => $cliente->id, 'name' => $cliente->name . " " . $cliente->lastname]);
+                  //  $cliente->notify(new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC));
+                    
+                    $notification = new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC);
+                    $cliente->notify($notification);
+                    // Recupera la última notificación de la base de datos
+                    $notification = $cliente->notifications()->orderBy('created_at', 'desc')->first();
+    
+                    //enviar push notification
+                    if (isset($cliente->device_token)) {
+                        $notificationController = new NotificationSendController();
+                        $url = url('/cliente/galeria/' . $notification->id);
+                        $notificationController->sendNotificationUser($cliente->device_token, "Aparición", "Apareciste en un fotografía con el título " . $image->titulo, User::FOTOC, $url);
+                    }
+                }
+            }
+
+            $image->clientes = $datos;
+            $image->analizado = true;
+            $image->save();
+
+            return $this->sendResponse($image, "clientes encontrados");
+        } else {
+            return "no se encontró rostros";
+        }
+
+
+        // return $clientes;
+    }
     public function cambiarEstado(Request $request)
     {
         $validator = Validator::make($request->all(), [

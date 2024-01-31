@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('slogan')->nullable(); //fotografo
             $table->string('direccion_envio')->nullable(); //cliente
             $table->string('gps')->nullable(); //cliente
+            $table->text('device_token')->nullable();
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

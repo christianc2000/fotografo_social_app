@@ -15,6 +15,7 @@ use App\Http\Controllers\Web\Cliente\PagoController;
 use App\Http\Controllers\Web\Fotografo\EventoController as FotografoEventoController;
 use App\Http\Controllers\Web\Fotografo\FotografoController as FotografoFotografoController;
 use App\Http\Controllers\Web\Fotografo\InvitacionController;
+use App\Http\Controllers\Web\NotificationSendController;
 use App\Http\Controllers\Web\Organizador\ClienteController;
 use App\Http\Controllers\Web\Organizador\EventoController;
 use App\Http\Controllers\Web\Organizador\FotografoController;
@@ -135,8 +136,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('notificaciones', NotificacionController::class)->names('cliente.notificacion');
         Route::get('perfil', [ClienteClienteController::class, 'perfil'])->name('cliente.perfil');
     });
-});
 
+    // ********************RUTAS NOTIFICATIONS
+    Route::get('/notification',[NotificationSendController::class,'notification'])->name('notification');
+    Route::post('/store-token', [NotificationSendController::class, 'updateDeviceToken'])->name('store.token');
+    Route::post('/send-web-notification', [NotificationSendController::class, 'sendNotification'])->name('send.web-notification');
+
+});
+//Notification fcm
+Route::get('/fcm',[NotificationSendController::class,'index'])->name('notification.fcm.index');
 //Plan
 Route::resource('plan', PlanController::class)->names('plan');
 Route::get('registrar/plan/{id}/organizador', [PlanController::class, 'registrarOrganizador'])->name('plan.registrar.organizador');
@@ -159,6 +167,7 @@ Route::post('register', function (CreateNewUser $creator) {
     // Personaliza la redirección después del registro
     return redirect('/'); // Cambia '/home' por la ruta que desees
 })->name('register');
+
 Route::post('login', function () {
     // Lógica de autenticación, por ejemplo:
     $credentials = request()->only('email', 'password');
@@ -180,46 +189,3 @@ Route::post('login', function () {
 })->middleware('guest')->name('login');
 
 Route::post('cambiar-estilo', [EstiloController::class, 'cambiarEstilo'])->name('cambiar.estilo');
-// // ************** payment *********************
-// Route::get('/payments', [PaymentController::class, 'index'])->name('payment_index');
-// Route::get('/payments/generate_payment', [PaymentController::class, 'generatePayment']);
-
-// //************************* atenciones ****************************/
-// Route::post('/attentions/get_attentions_turn', [AtencionController::class, 'getAttentionsDoctor']);
-// //*********** orden *******************************/
-// Route::get('/orden', [OrdenController::class, 'index'])->name('orden_index');
-
-// //********************** reporte *********************************/
-// Route::get('/report/order/pdf', [OrdenController::class, 'generatePdfOrder']);
-
-// //************************* cita  *********************/
-// Route::get('/cita/medico/index', [CitaController::class, 'medico_cita_index'])->name('medico_cita_index');
-// Route::get('/cita/create', [CitaController::class, 'medico_cita_create'])->name('medico_cita_create');
-// Route::post('/cita/store', [CitaController::class, 'medico_cita_store'])->name('medico_cita_store');
-// Route::get('/cita/medico/edit/store', [CitaController::class, 'medico_cita_edit_store'])->name('medico_cita_edit_store');
-// Route::post('/cita/medico/edit', [CitaController::class, 'medico_cita_edit'])->name('medico_cita_edit');
-// Route::delete('/cita/medico/delete/{id}', [CitaController::class, 'medico_cita_delete'])->name('medico_cita_delete');
-
-
-// Route::post('/servicio/medico_index', [ServicioController::class, 'medico_index'])->name('medico_index');
-
-// //********** servicios medico **********************/
-// Route::get('/servicio/medico/index', [ServicioController::class, 'medico_servicio_index'])->name('medico_servicio_index');
-// Route::get('/servicio/medico/create', [ServicioController::class, 'medico_servicio_create'])->name('medico_servicio_create');
-
-// // ********************** paciente de medico **************************************
-// Route::get('/paciente/medico/index', [UserController::class, 'medico_paciente_index'])->name('medico_paciente_index');
-
-// // ************************** historial medico ********************//
-// Route::get('/historial/medico/index', [HistorialController::class, 'medico_historial_index'])->name('medico_historial_index');
-// Route::get('/historial/medico/create', [HistorialController::class, 'medico_historial_create'])->name('medico_historial_create');
-// Route::post('/historial/medico/store', [HistorialController::class, 'medico_historial_store'])->name('medico_historial_store');
-// Route::get('/historial/medico/edit', [HistorialController::class, 'medico_historial_edit'])->name('medico_historial_edit');
-
-// //************* consulta medico  ***********************/
-// Route::get('/consulta/medico/index', [ConsultaController::class, 'medico_consulta_index'])->name('medico_consulta_index');
-// Route::get('/consulta/medico/create', [ConsultaController::class, 'medico_consulta_create'])->name('medico_consulta_create');
-// Route::post('/consulta/medico/store', [ConsultaController::class, 'medico_consulta_store'])->name('medico_consulta_store');
-// Route::get('/consulta/medico/index2', [ConsultaController::class, 'medico_consulta_index2'])->name('medico_consulta_index2');
-// Route::get('/consulta/medico/show', [ConsultaController::class, 'medico_consulta_show'])->name('medico_consulta_show');
-// Route::get('/consulta/medico/historia_clinica', [ConsultaController::class, 'medico_historia_clinica_report'])->name('medico_historia_clinica_report');

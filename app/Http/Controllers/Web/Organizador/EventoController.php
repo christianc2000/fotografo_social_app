@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Organizador;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\NotificationSendController;
 use App\Http\Requests\Evento\StoreEventoRequest;
 use App\Http\Requests\Evento\UpdateEventoRequest;
 use App\Models\Evento;
@@ -170,7 +171,20 @@ class EventoController extends Controller
                 $fotografo->vinculacionEvento()->attach($evento, [
                     'fecha_envio' => Carbon::now()->toDateTimeString()
                 ]);
-                $fotografo->notify(new UserToEventoNotification((string) $id, $evento->titulo, $evento->img_evento, User::EVENTO));
+                
+                $notification = new UserToEventoNotification((string) $id, $evento->titulo, $evento->img_evento, User::EVENTO);
+                $fotografo->notify($notification);
+                // Recupera la última notificación de la base de datos
+                $notification = $fotografo->notifications()->orderBy('created_at', 'desc')->first();
+
+                //enviar push notification
+                if (isset($fotografo->device_token)) {
+                    $notificationController = new NotificationSendController();
+                    $url = url('/fotografo/invitacion/' . $notification->id);
+                    $notificationController->sendNotificationUser($fotografo->device_token, "Invitación", "Te invitan a participar del evento " . $evento->titulo, User::EVENTO, $url);
+                }
+                
+               
                 return redirect()->route('organizador.evento.fotografos.index', $evento->id)->with('mensaje', "Fotografo vinculado al evento exitosamente. Esperando confirmación");
                 //logica para enviar la invitación por correo
             } else {

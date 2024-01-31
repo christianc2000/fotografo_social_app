@@ -17,12 +17,13 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "sweetalert2": "^11.10.1",
         "alpinejs": "^3.13.3",
         "chart.js": "^4.3.0",
         "chartjs-adapter-moment": "^1.0.1",
         "datatables.net-dt": "^1.13.8",
+        "firebase": "^10.7.2",
         "flatpickr": "^4.6.13",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "sweetalert2": "^11.10.1"
     }
 }

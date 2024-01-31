@@ -97,20 +97,11 @@
                                     <!-- component -->
                                     <div class="flex items-center space-x-6">
                                         <div class="shrink-0">
-                                            <img id="preview" class="h-16 w-16 object-fill rounded-full"
+                                            <img id="preview" class="h-32 w-32 object-fill rounded-full"
                                                 src="{{ $evento->img_evento }}" alt="Current profile photo" />
                                         </div>
-                                        <label class="block">
-                                            <span class="sr-only">Seleccionar foto de perfil</span>
-                                            <input type="file" id="imagen" name="imagen" accept="image/*"
-                                                class="block w-full text-sm text-slate-500
-                                                file:mr-4 file:py-2 file:px-4
-                                                file:rounded-full file:border-0
-                                                file:text-sm file:font-semibold
-                                                file:bg-violet-50 file:text-gray-500
-                                                hover:file:bg-violet-100" />
-                                        </label>
                                     </div>
+                                    
                                 </div>
                             </div>
                             @php
@@ -133,8 +124,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

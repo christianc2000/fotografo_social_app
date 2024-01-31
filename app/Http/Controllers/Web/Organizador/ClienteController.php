@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Organizador;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Web\NotificationSendController;
 use App\Mail\InviteMail;
 use App\Models\Evento;
 use App\Models\User;
@@ -65,7 +66,7 @@ class ClienteController extends Controller
                 if (isset($evento)) {
                     return redirect()->route('cliente.evento.index');
                 }
-                $evento=Evento::find($id);
+                $evento = Evento::find($id);
                 return view('email.accept_invitacion', compact('evento'));
             } else {
                 return redirect()->route('logout');
@@ -74,7 +75,7 @@ class ClienteController extends Controller
             return redirect()->route('login');
         }
     }
-    public function storeAccept($id, Request $request)//cuando el cliente acepta la invitación por el correo
+    public function storeAccept($id, Request $request) //cuando el cliente acepta la invitación por el correo
     {
         // Asegúrate de que el usuario esté autenticado
         $cliente = Auth::user();
@@ -139,7 +140,7 @@ class ClienteController extends Controller
             return redirect()->route('organizador.evento.cliente.index', $request->evento)->with('error', "Falla al enviar el correo");
         }
     }
-    public function agregarClienteStore(Request $request, $id)//cuando el organizador agrega a un cliente por notificaciones
+    public function agregarClienteStore(Request $request, $id) //cuando el organizador agrega a un cliente por notificaciones
     {
         $user = Auth::user();
 
@@ -153,10 +154,10 @@ class ClienteController extends Controller
                 $cliente = User::find($request->cliente_id);
                 $cliente->vinculacionEvento()->attach($id, [
                     'fecha_envio' => Carbon::now()->toDateTimeString(),
-                    'fecha_aceptacion' => Carbon::now()->toDateTimeString(),
-                    'estado' => Evento::ACEPTADO
+                    // 'fecha_aceptacion' => Carbon::now()->toDateTimeString(),
+                    'estado' => Evento::ESPERA
                 ]);
-                
+
                 $information = ["vinculacion" => $cliente->vinculacionEvento->find($evento->id), "usuario" => ["name" => $cliente->name . " " . $cliente->lastname, "email" => $cliente->email, "tipo" => $cliente->tipo, "url_photo" => $cliente->url_photo]];
                 $qrCode = QrCode::format('png')->size(400)->generate(json_encode($information));
                 $name = time() . '_' . 'qr_' . $cliente->name . '_evento' . '.png';
@@ -167,8 +168,19 @@ class ClienteController extends Controller
                 $urlImagen = Storage::disk('s3')->url($path);
                 $cliente->vinculacionEvento()->updateExistingPivot($evento->id, ['qr' => $urlImagen, 'asistencia' => false]);
 
-                $cliente->notify(new UserToEventoNotification((string) $id, $evento->titulo, $evento->img_evento, User::EVENTO));
-                return redirect()->route('organizador.evento.cliente.index', $evento->id)->with('mensaje', "Fotografo vinculado al evento exitosamente. Esperando confirmación");
+                $notification = new UserToEventoNotification((string) $id, $evento->titulo, $evento->img_evento, User::EVENTO);
+                $cliente->notify($notification);
+                // Recupera la última notificación de la base de datos
+                $notification = $cliente->notifications()->orderBy('created_at', 'desc')->first();
+
+                //enviar push notification
+                if (isset($cliente->device_token)) {
+                    $notificationController = new NotificationSendController();
+                    $url = url('/cliente/invitacion/' . $notification->id);
+                    $notificationController->sendNotificationUser($cliente->device_token, "Invitación", "Te invitan a participar del evento " . $evento->titulo, User::EVENTO, $url);
+                }
+
+                return redirect()->route('organizador.evento.cliente.index', $evento->id)->with('mensaje', "Cliente vinculado al evento exitosamente. Esperando confirmación");
                 //logica para enviar la invitación por correo
             } else {
                 //si el evento que pasa no existe

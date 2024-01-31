@@ -19,7 +19,7 @@
                 </div>
             @else
                 <div id="notification" data-user="{{ Auth::user()->id }}"
-                    class="absolute top-0 right-0 w-2.5 h-2.5 bg-rose-500 border-2 border-white dark:border-[#182235] rounded-full">
+                    class="absolute top-0 right-0 w-2.5 h-2.5 bg-rose-500 border-1 border-white dark:border-[#182235] rounded-full">
                 </div>
             @endif
         @endauth
@@ -32,7 +32,7 @@
         style="display: none;">
         <ul>
             @auth
-                <div class="border-b border-slate-200 dark:border-slate-700 last:border-0 bg-gray-200">
+                <div id="new-notification" class="border-b border-slate-200 dark:border-slate-700 last:border-0 bg-gray-200">
                     <h1 class="px-4">Notificaciones nuevas</h1>
                 </div>
                 @forelse (Auth::user()->unreadNotifications as $notification)
@@ -78,10 +78,10 @@
                         </li>
                     @endif
                 @empty
-                    <span class="block text-sm mb-2 px-4">
+                    <span id="sin-notificacion-nueva" class="block text-sm mb-2 px-4">
                         No hay notificaciones nuevas</span>
                 @endforelse
-                <div class="border-b border-slate-200 dark:border-slate-700 last:border-0 bg-gray-200">
+                <div id="old-notification" class="border-b border-slate-200 dark:border-slate-700 last:border-0 bg-gray-200">
                     <h1 class="px-4">Notificaciones leídas</h1>
                 </div>
                 @php
@@ -196,7 +196,7 @@
                                 'bottom-4',
                                 'left-6', 'w-5', 'h-5', 'border-1');
                             notificationCount.classList.add('top-0', 'right-0', 'w-2.5', 'h-2.5',
-                                'border-2');
+                                'border-1');
                             notificationModal.style.display = "block";
                         })
                         .catch((error) => {

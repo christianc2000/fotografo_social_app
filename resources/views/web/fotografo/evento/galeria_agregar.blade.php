@@ -1,5 +1,11 @@
 <x-app-layout>
     <div class="container-fluid d-flex justify-content-center aling-items-center">
+        <div id="spinner" class="h-screen bg-white" style="display: none">
+            <div class="flex justify-center items-center h-full">
+                <img class="h-16 w-16" src="https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif"
+                    alt="">
+            </div>
+        </div>
         <div class="card" style="width: 100%;">
             <div class="card-body p-5">
                 <div class="space-y-6">
@@ -259,7 +265,15 @@
                 }
                 formData.append('user_id', userId);
                 formData.append('evento_id', eventoId);
+
                 var apiUrl = new URL('/api/fotografo/evento/galeria/agregar', window.location.origin);
+                // ACTIVAR SPINNER
+                $("#spinner").css({
+                    "display": "flex", // Muestra el spinner
+                    "background": "rgba(255, 255, 255, 0.5)", // Hace que el fondo sea blanco y semi-transparente
+                    "justify-content": "center", // Centra el spinner horizontalmente
+                    "align-items": "center" // Centra el spinner 
+                });
                 $.ajax({
                     url: apiUrl.toString(),
                     type: 'POST',
@@ -274,8 +288,10 @@
                             "progressBar": true
                         }
                         console.log("ingresa a success");
+                        $("#spinner").css("display", "none");
                         toastr.success("Imagenes subidas correctamente");
                         // Redirecciona a la URL devuelta por el servidor.
+
                         window.location.href = respuesta.redirect_url;
                     },
                     error: function(error) {
@@ -284,6 +300,7 @@
                             "progressBar": true
                         }
                         console.log("Error al subir las imágenes");
+                        $("#spinner").css("display", "none");
                         toastr.error(error);
 
                     }
