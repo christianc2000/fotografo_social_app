@@ -94,7 +94,7 @@ class ImagesController extends BaseController
                     'user_id' => $user->id,
                     'evento_id' => $evento->id
                 ]);
-               $this->analizarImagene($evento->id, $image->id);
+                $this->analizarImagene($evento->id, $image->id);
             } else {
                 return response()->json([
                     'success' => false,
@@ -171,7 +171,17 @@ class ImagesController extends BaseController
                     // Aquí puedes manejar los rostros que coinciden
                     $c = $c + 1;
                     $datos->push(['id' => $cliente->id, 'name' => $cliente->name . " " . $cliente->lastname]);
-                    $cliente->notify(new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC));
+                    $notification = new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC);
+                    $cliente->notify($notification);
+                    // Recupera la última notificación de la base de datos
+                    $notification = $cliente->notifications()->orderBy('created_at', 'desc')->first();
+
+                    //enviar push notification
+                    if (isset($cliente->device_token)) {
+                        $notificationController = new NotificationSendController();
+                        $url = url('/cliente/galeria/' . $notification->id);
+                        $notificationController->sendNotificationUser($cliente->device_token, "Aparición", "Apareciste en un fotografía con el título " . $image->titulo, User::FOTOC, $url);
+                    }
                 }
             }
 
@@ -187,8 +197,8 @@ class ImagesController extends BaseController
 
         // return $clientes;
     }
-//ANALIZAR LAS IMAGENES SUBIDAS
-public function analizarImagene($evento_id, $image_id)
+    //ANALIZAR LAS IMAGENES SUBIDAS
+    public function analizarImagene($evento_id, $image_id)
     { //id de la imagen, y id del evento
         $validator = Validator::make(['evento_id' => $evento_id, 'image_id' => $image_id], [
             'evento_id' => 'required|exists:eventos,id',
@@ -249,13 +259,13 @@ public function analizarImagene($evento_id, $image_id)
                     // Aquí puedes manejar los rostros que coinciden
                     $c = $c + 1;
                     $datos->push(['id' => $cliente->id, 'name' => $cliente->name . " " . $cliente->lastname]);
-                  //  $cliente->notify(new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC));
-                    
+                    //  $cliente->notify(new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC));
+
                     $notification = new UserToEventoNotification((string) $image->id, $image->titulo, $image->url, User::FOTOC);
                     $cliente->notify($notification);
                     // Recupera la última notificación de la base de datos
                     $notification = $cliente->notifications()->orderBy('created_at', 'desc')->first();
-    
+
                     //enviar push notification
                     if (isset($cliente->device_token)) {
                         $notificationController = new NotificationSendController();
