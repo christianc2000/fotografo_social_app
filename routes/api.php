@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('organizador')->group(function () {
     Route::post('perfil', [OrganizadorController::class, 'updatePerfil']);
     Route::post('password', [OrganizadorController::class, 'updatePassword']);
+    Route::post('estado',[OrganizadorController::class,'changeEstado']);
 });
 Route::prefix('fotografo')->group(function () {
     Route::post('accept-invitacion', [InvitacionController::class, 'aceptarInvitacion'])->name('fotografo.accept.invitacion');

@@ -213,14 +213,14 @@
                                                                 @if ($evento->estado == \App\Models\Evento::VIGENTE || $evento->estado == \App\Models\Evento::CURSO)
                                                                     <a href="{{ route('organizador.evento.edit', $evento->id) }}"
                                                                         class="hover:bg-gray-200">Editar</a>
-                                                                    <a href="#estado"
+                                                                    <a href="{{ route('organizador.evento.estado', $evento->id) }}"
                                                                         class="hover:bg-gray-200">Estado</a>
                                                                 @elseif($evento->estado == \App\Models\Evento::FINALIZADO || $evento->estado == \App\Models\Evento::CANCELADO)
                                                                     <a href="#editar" class="hover:bg-gray-200">Ver</a>
                                                                 @endif
                                                                 <a href="{{ route('organizador.evento.fotografos.index', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Fotografos</a>
-                                                                <a href="{{route('organizador.evento.cliente.index',$evento->id)}}"
+                                                                <a href="{{ route('organizador.evento.cliente.index', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Invitados</a>
                                                                 {{-- <a href="{{ route('personal.edit', $evento->id) }}"
                                                                     class="hover:bg-gray-200">Editar</a>

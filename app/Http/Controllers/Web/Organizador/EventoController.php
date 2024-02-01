@@ -171,7 +171,7 @@ class EventoController extends Controller
                 $fotografo->vinculacionEvento()->attach($evento, [
                     'fecha_envio' => Carbon::now()->toDateTimeString()
                 ]);
-                
+
                 $notification = new UserToEventoNotification((string) $id, $evento->titulo, $evento->img_evento, User::EVENTO);
                 $fotografo->notify($notification);
                 // Recupera la última notificación de la base de datos
@@ -183,8 +183,8 @@ class EventoController extends Controller
                     $url = url('/fotografo/invitacion/' . $notification->id);
                     $notificationController->sendNotificationUser($fotografo->device_token, "Invitación", "Te invitan a participar del evento " . $evento->titulo, User::EVENTO, $url);
                 }
-                
-               
+
+
                 return redirect()->route('organizador.evento.fotografos.index', $evento->id)->with('mensaje', "Fotografo vinculado al evento exitosamente. Esperando confirmación");
                 //logica para enviar la invitación por correo
             } else {
@@ -194,5 +194,10 @@ class EventoController extends Controller
         } else {
             return view('pages/utility/404');
         }
+    }
+    public function estadoEvento($id)
+    {
+        $evento = Evento::find($id);
+        return view('web.organizador.evento.estado', compact("evento"));
     }
 }

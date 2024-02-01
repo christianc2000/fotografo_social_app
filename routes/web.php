@@ -101,8 +101,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('evento/{id}/agregar/fotografos', [EventoController::class, 'agregarFotografoStore'])->name('organizacion.evento.fotografos.agregar.store');
         Route::get('evento/{id}/clientes', [ClienteController::class, 'index'])->name('organizador.evento.cliente.index');
         Route::get('evento/{id}/agregar/cliente', [ClienteController::class, 'agregarCliente'])->name('organizador.evento.cliente.agregar');
-        Route::post('evento/{id}/agreger/cliente', [ClienteController::class, 'agregarClienteStore'])->name('organizacion.evento.cliente.agregar.store');//invitar al cliente por medio de las notificaiones, se crea un código qr de acceso
+        Route::post('evento/{id}/agreger/cliente', [ClienteController::class, 'agregarClienteStore'])->name('organizacion.evento.cliente.agregar.store'); //invitar al cliente por medio de las notificaiones, se crea un código qr de acceso
         Route::post('evento/{id}/agregar/cliente/correo', [ClienteController::class, 'agregarClienteCorreoStore'])->name('organizacion.evento.cliente.agregar.correo.store');
+        //   Estado del evento
+        Route::get('evento/{id}/estado', [EventoController::class, 'estadoEvento'])->name('organizador.evento.estado');
         Route::post('send-email', [ClienteController::class, 'sendEmail'])->name('email.send');
         Route::get('vincular/fotografo', [FotografoController::class, 'vincularFotografo'])->name('organizador.vincular.fotografo');
         Route::post('vincular/fotografo', [FotografoController::class, 'vincularFotografoStore'])->name('organizador.vincular.fotografo.store');
@@ -130,7 +132,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('evento', ClienteEventoController::class)->names('cliente.evento');
         Route::resource('invitacion', ClienteInvitacionController::class)->names('cliente.invitacion'); //id de la notificación de invitación a participar del evento
         Route::get('accept-invitation/{id}', [ClienteController::class, 'acceptInvitation']);
-        Route::post('accept-invitation/{id}', [ClienteController::class, 'storeAccept'])->name('email.accept');//aceptación de la invitación por medio del correo
+        Route::post('accept-invitation/{id}', [ClienteController::class, 'storeAccept'])->name('email.accept'); //aceptación de la invitación por medio del correo
         //imagenes de evento
         Route::get('evento/{id}/image', [ClienteEventoController::class, 'imagesEvento'])->name('cliente.evento.images');
         Route::resource('notificaciones', NotificacionController::class)->names('cliente.notificacion');
@@ -138,13 +140,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     // ********************RUTAS NOTIFICATIONS
-    Route::get('/notification',[NotificationSendController::class,'notification'])->name('notification');
+    Route::get('/notification', [NotificationSendController::class, 'notification'])->name('notification');
     Route::post('/store-token', [NotificationSendController::class, 'updateDeviceToken'])->name('store.token');
     Route::post('/send-web-notification', [NotificationSendController::class, 'sendNotification'])->name('send.web-notification');
-
 });
 //Notification fcm
-Route::get('/fcm',[NotificationSendController::class,'index'])->name('notification.fcm.index');
+Route::get('/fcm', [NotificationSendController::class, 'index'])->name('notification.fcm.index');
 //Plan
 Route::resource('plan', PlanController::class)->names('plan');
 Route::get('registrar/plan/{id}/organizador', [PlanController::class, 'registrarOrganizador'])->name('plan.registrar.organizador');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Organizador;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Evento;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -89,5 +90,29 @@ class OrganizadorController extends BaseController
             return $this->sendResponse($user, "exitoso");
         }
         return $this->sendError('Error usuario no autorizado', [], 402);
+    }
+    public function changeEstado(Request $request){
+        $validator = Validator::make($request->all(), [
+            'evento_id' => 'required|exists:eventos,id',
+            'estado' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Error de validación', $validator->errors(), 422); // 422 es el código de respuesta HTTP para errores de validación
+        }
+        $evento=Evento::find($request->evento_id);
+        if(Evento::VIGENTE==$request->estado){
+            $evento->estado=Evento::VIGENTE;
+        }else if(Evento::CURSO==$request->estado){
+            $evento->estado=Evento::CURSO;
+        }else if(Evento::FINALIZADO==$request->estado){
+            $evento->estado=Evento::FINALIZADO;
+        }else if(Evento::CANCELADO==$request->estado){
+            $evento->estado=Evento::CANCELADO;
+        }else{
+            return $this->sendError('Error no existe ese estado',[],404);
+        }
+        $evento->save();
+        return $this->sendResponse($evento,"Estado actualizado exitosamente");
     }
 }
